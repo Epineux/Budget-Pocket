@@ -1,15 +1,15 @@
-import type { Metadata } from 'next';
-import localFont from 'next/font/local';
-import './globals.css';
+import type { Metadata } from "next";
+import localFont from "next/font/local";
+import "./globals.css";
 
 // Local Fonts
 const publicSans = localFont({
-  src: '../public/assets/fonts/PublicSans-VariableFont_wght.ttf',
+  src: "../public/assets/fonts/PublicSans-VariableFont_wght.ttf",
 });
 
 export const metadata: Metadata = {
-  title: 'Budget Pocket',
-  description: 'Budget-Pocket, your personal budgeting app',
+  title: "Budget Pocket",
+  description: "Budget-Pocket, your personal budgeting app",
 };
 
 export default function RootLayout({
