@@ -428,16 +428,16 @@
       "theme": "#277C78"
     },
     {
-      "name": "Concert Ticket",
-      "target": 150.0,
-      "total": 110.0,
-      "theme": "#626070"
-    },
-    {
       "name": "Gift",
       "target": 150.0,
       "total": 110.0,
       "theme": "#82C9D7"
+    },
+    {
+      "name": "Concert Ticket",
+      "target": 150.0,
+      "total": 110.0,
+      "theme": "#626070"
     },
     {
       "name": "New Laptop",

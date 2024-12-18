@@ -9,7 +9,7 @@ import { sidebarItems } from "../constants/index";
 const Sidebar = () => {
   const pathname = usePathname();
   return (
-    <aside className="flex w-[300px] flex-col rounded-r-2xl bg-grey-900">
+    <aside className="hidden w-[300px] flex-col rounded-r-2xl bg-grey-900 lg:flex">
       <Image
         src="/assets/images/logo-large.svg"
         alt="Budget Logo"
