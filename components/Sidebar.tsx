@@ -9,13 +9,13 @@ import { sidebarItems } from "../constants/index";
 const Sidebar = () => {
   const pathname = usePathname();
   return (
-    <aside className="hidden w-[300px] flex-col rounded-r-2xl bg-grey-900 lg:flex">
+    <aside className="hidden flex-col rounded-r-2xl bg-grey-900 md:flex lg:w-[300px]">
       <Image
         src="/assets/images/logo-large.svg"
         alt="Budget Logo"
         width={121}
         height={22}
-        className="m-3xl"
+        className="m-3xl origin-left scale-75 transform lg:scale-100"
       />
       <ul className="py-xl">
         {sidebarItems.map((item) => (
@@ -37,7 +37,7 @@ const Sidebar = () => {
                 alt={item.name}
                 width={20}
                 height={20}
-                className={clsx("h-5 w-5", {
+                className={clsx("hidden h-5 w-5 lg:block", {
                   filter: pathname === item.href,
                 })}
               />
@@ -52,15 +52,15 @@ const Sidebar = () => {
           </li>
         ))}
       </ul>
-      <div className="mb-3xl mt-auto flex items-center gap-lg hover:cursor-pointer hover:brightness-0 hover:invert">
+      <div className="mb-3xl ml-3xl mt-auto flex items-center gap-lg hover:cursor-pointer hover:brightness-0 hover:invert">
         <Image
           src="/assets/images/icon-minimize-menu.svg"
           alt="User Avatar"
           width={20}
           height={20}
-          className="ml-3xl h-5 w-5"
+          className=" h-5 w-5"
         />
-        <span className="h3 text-gray-300">Minimize Menu</span>
+        <span className="h3 hidden text-gray-300 lg:block">Minimize Menu</span>
       </div>
     </aside>
   );

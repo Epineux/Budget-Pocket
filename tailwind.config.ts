@@ -1,3 +1,4 @@
+import containerQueries from "@tailwindcss/container-queries";
 import type { Config } from "tailwindcss";
 
 export default {
@@ -47,7 +48,13 @@ export default {
         "2xl": "2rem", // 32px
         "3xl": "2.5rem", // 40px
       },
+      containerQueries: {
+        sm: "400px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
+      },
     },
   },
-  plugins: [],
+  plugins: [containerQueries],
 } satisfies Config;

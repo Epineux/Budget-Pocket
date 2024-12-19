@@ -5,7 +5,7 @@ import data from "../../constants/data.json";
 const PotsOverview = () => {
   const potsInfo = data.pots;
   return (
-    <div className="col-span-3 rounded-xl bg-white p-2xl">
+    <div className="col-span-5 rounded-xl bg-white p-2xl @container md:col-span-3">
       <div className="flex justify-between">
         <h2 className="h2 text-grey-900">Pots</h2>
         <Link
@@ -21,7 +21,7 @@ const PotsOverview = () => {
           />
         </Link>
       </div>
-      <div className="mt-lg grid grid-cols-2 gap-lg">
+      <div className="mt-lg grid gap-lg @[460px]:grid-cols-2">
         <div className="flex items-center gap-md rounded-xl bg-beige-100 p-md">
           <div className="flex h-10 w-10 items-center justify-center">
             <Image

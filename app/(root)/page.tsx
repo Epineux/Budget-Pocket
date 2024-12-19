@@ -13,7 +13,7 @@ export default function Home() {
         <BalanceInfo title="Income" amount={3814.25} currency="$" />
         <BalanceInfo title="Expenses" amount={1700.5} currency="$" />
       </section>
-      <section className="mt-2xl grid grid-cols-5 gap-xl">
+      <section className="mt-2xl grid grid-cols-5 gap-xl ">
         <PotsOverview />
         <BudgetsOverview />
         <TransactionsOverview />
