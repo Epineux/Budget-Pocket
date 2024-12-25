@@ -25,3 +25,10 @@
     @apply text-[12px] font-bold leading-normal tracking-normal;
   }
 }
+
+@layer base {
+  :root {
+
+    --radius: 0.5rem
+  }
+}
