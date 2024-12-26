@@ -20,20 +20,16 @@ type BudgetItem = {
   theme: string;
 };
 
-type DonutChartProps = {
-  budgets?: BudgetItem[];
-};
 
-export default function DonutChart({
-  budgetsData,
-}: {
-  budgetsData: DonutChartProps;
-}) {
+export default function DonutChart({ budgetsData }: { budgetsData: BudgetItem[] }) {
   const pieData = budgetsData.map((budget) => ({
     name: budget.name,
     value: budget.maximum,
   }));
-  const totalValue = budgetsData.reduce((sum, entry) => sum + entry.maximum, 0);
+  const totalValue = budgetsData.reduce(
+    (sum: number, entry: BudgetItem) => sum + entry.maximum,
+    0,
+  );
 
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload?.[0]) {
@@ -57,7 +53,7 @@ export default function DonutChart({
       setTimeout(() => {
         setIsVisible(true);
       }, 1500);
-    });
+    }, []);
 
     if (!viewBox?.cx || !viewBox?.cy) return null;
 
@@ -77,10 +73,10 @@ export default function DonutChart({
           className="h2 font-bold"
           fill="#201f24"
         >
-          ${totalValue.toLocaleString()}
+          $338
         </tspan>
         <tspan x={viewBox.cx} dy="1.8em" className="text-small" fill=" #696868">
-          of ????? limit
+          of ${totalValue} limit
         </tspan>
       </text>
     );
@@ -88,7 +84,7 @@ export default function DonutChart({
 
   return (
     <Card className="col-span-3 border-none shadow-none">
-      <CardContent className="@[400px]:justify-start flex justify-center p-0">
+      <CardContent className="flex justify-center p-0 @[400px]:justify-start">
         <ResponsiveContainer width={240} height={320}>
           <PieChart>
             <Pie

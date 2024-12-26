@@ -8,16 +8,22 @@ export default function Home() {
   return (
     <main className="px-3xl py-2xl @container">
       <h1 className="h1 pb-lg text-grey-900">Overview</h1>
-      <section className="mt-2xl gap-xl @[600px]:grid-cols-3 grid grid-cols-1">
+      <section className="mt-2xl grid grid-cols-1 gap-xl @[600px]:grid-cols-3">
         <BalanceInfo title="Current Balance" amount={4836} currency="$" />
         <BalanceInfo title="Income" amount={3814.25} currency="$" />
         <BalanceInfo title="Expenses" amount={1700.5} currency="$" />
       </section>
-      <section className="mt-2xl gap-xl @[800px]:grid-cols-5 grid grid-cols-1">
-        <PotsOverview />
-        <BudgetsOverview />
-        <TransactionsOverview />
-        <RecurringBillsOverview />
+      <section className="mt-2xl flex flex-col gap-xl @[800px]:flex-row">
+        {/* Left */}
+        <div className="flex-[3]">
+          <PotsOverview />
+          <TransactionsOverview />
+        </div>
+        {/* Right */}
+        <div className="flex-[2]">
+          <BudgetsOverview />
+          <RecurringBillsOverview />
+        </div>
       </section>
     </main>
   );

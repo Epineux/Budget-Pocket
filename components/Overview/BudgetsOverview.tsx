@@ -6,11 +6,11 @@ import BudgetsChart from "./BudgetsChart";
 const BudgetsOverview = () => {
   const budgetsData = data.budgets;
   return (
-    <div className="p-2xl @container col-span-5 rounded-xl bg-white md:col-span-2">
+    <div className="rounded-xl bg-white p-2xl @container">
       <div className="flex justify-between">
         <h2 className="h2 text-grey-900">Budgets</h2>
         <Link
-          className="text-standard gap-sm text-grey-500 flex items-center hover:brightness-50"
+          className="text-standard flex items-center gap-sm text-grey-500 hover:brightness-50"
           href="/budgets"
         >
           <span>See Details</span>
@@ -22,18 +22,18 @@ const BudgetsOverview = () => {
           />
         </Link>
       </div>
-      <div className="@[400px]:grid-cols-4 grid grid-cols-1">
+      <div className="grid grid-cols-1 @[400px]:grid-cols-4">
         <BudgetsChart budgetsData={budgetsData} />
-        <div className="gap-md @[400px]:grid-cols-1 @[400px]:my-12 grid grid-cols-2">
+        <div className="grid grid-cols-2 gap-md @[400px]:my-12 @[400px]:grid-cols-1">
           {budgetsData.map((category) => (
-            <div key={category.name} className="gap-md flex items-center">
+            <div key={category.name} className="flex items-center gap-md">
               <div
                 style={{
                   backgroundColor: category.theme,
                 }}
                 className="h-full w-1 rounded-full"
               ></div>
-              <div className="gap-2xs flex flex-col">
+              <div className="flex flex-col gap-2xs">
                 <span className="text-small text-grey-500">
                   {category.name}
                 </span>
