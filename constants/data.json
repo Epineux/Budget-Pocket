@@ -451,5 +451,22 @@
       "total": 531.0,
       "theme": "#826CB0"
     }
+  ],
+  "recurringBills": [
+    {
+      "name": "Paid Bills",
+      "amount": 190,
+      "theme": "#277C78"
+    },
+    {
+      "name": "Total Upcoming",
+      "amount": 194.98,
+      "theme": "#F2CDAC"
+    },
+    {
+      "name": "Due Soon",
+      "amount": 59.98,
+      "theme": "#82C9D7"
+    }
   ]
 }

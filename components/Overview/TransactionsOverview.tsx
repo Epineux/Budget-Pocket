@@ -11,7 +11,7 @@ const TransactionsOverview = () => {
         <h2 className="h2 text-grey-900">Transactions</h2>
         <Link
           className="text-standard flex items-center gap-sm text-grey-500 hover:brightness-50"
-          href="/pots"
+          href="/transactions"
         >
           <span>View All</span>
           <Image
