@@ -36,11 +36,11 @@ const PotsOverview = () => {
             <span className="h2 xl:h1 text-grey-900">$850</span>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-md">
+        <ul className="grid grid-cols-2 gap-md">
           {potsInfo
             .filter((pot) => pot.name !== "Holiday")
             .map((pot) => (
-              <div key={pot.name} className="flex items-center gap-md">
+              <li key={pot.name} className="flex items-center gap-md">
                 <div
                   style={{
                     backgroundColor: pot.theme,
@@ -53,9 +53,9 @@ const PotsOverview = () => {
                     ${pot.total}
                   </span>
                 </div>
-              </div>
+              </li>
             ))}
-        </div>
+        </ul>
       </div>
     </div>
   );

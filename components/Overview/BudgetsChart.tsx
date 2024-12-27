@@ -12,7 +12,6 @@ import {
   Tooltip,
 } from "recharts";
 
-//type when budget will be passed by props
 
 type BudgetItem = {
   name: string;
@@ -20,8 +19,11 @@ type BudgetItem = {
   theme: string;
 };
 
-
-export default function DonutChart({ budgetsData }: { budgetsData: BudgetItem[] }) {
+export default function DonutChart({
+  budgetsData,
+}: {
+  budgetsData: BudgetItem[];
+}) {
   const pieData = budgetsData.map((budget) => ({
     name: budget.name,
     value: budget.maximum,
@@ -84,7 +86,7 @@ export default function DonutChart({ budgetsData }: { budgetsData: BudgetItem[] 
 
   return (
     <Card className="col-span-3 border-none shadow-none">
-      <CardContent className="flex justify-center p-0 @[400px]:justify-start">
+      <CardContent className="flex justify-center p-0 xl:@[400px]:justify-start">
         <ResponsiveContainer width={240} height={320}>
           <PieChart>
             <Pie

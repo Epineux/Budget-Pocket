@@ -15,12 +15,12 @@ export default function Home() {
       </section>
       <section className="mt-2xl flex flex-col gap-xl @[800px]:flex-row">
         {/* Left */}
-        <div className="flex-[3]">
+        <div className="flex flex-[3] flex-col gap-xl">
           <PotsOverview />
           <TransactionsOverview />
         </div>
         {/* Right */}
-        <div className="flex-[2]">
+        <div className="flex flex-[2] flex-col gap-xl">
           <BudgetsOverview />
           <RecurringBillsOverview />
         </div>

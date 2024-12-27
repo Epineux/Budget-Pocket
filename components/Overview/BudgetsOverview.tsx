@@ -24,9 +24,9 @@ const BudgetsOverview = () => {
       </div>
       <div className="grid grid-cols-1 @[400px]:grid-cols-4">
         <BudgetsChart budgetsData={budgetsData} />
-        <div className="grid grid-cols-2 gap-md @[400px]:my-12 @[400px]:grid-cols-1">
+        <ul className="grid grid-cols-2 gap-md @[400px]:my-12 @[400px]:grid-cols-1">
           {budgetsData.map((category) => (
-            <div key={category.name} className="flex items-center gap-md">
+            <li key={category.name} className="flex items-center gap-md">
               <div
                 style={{
                   backgroundColor: category.theme,
@@ -41,9 +41,9 @@ const BudgetsOverview = () => {
                   ${category.maximum}
                 </span>
               </div>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </div>
   );
