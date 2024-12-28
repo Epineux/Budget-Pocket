@@ -87,12 +87,12 @@ export default function DonutChart({
   return (
     <Card className="col-span-3 border-none shadow-none">
       <CardContent className="flex justify-center p-0 xl:@[400px]:justify-start">
-        <ResponsiveContainer width={240} height={320}>
+        <ResponsiveContainer width={240} height={305}>
           <PieChart>
             <Pie
               data={pieData}
               cx="50%"
-              cy="50%"
+              cy="55%"
               innerRadius={76}
               outerRadius={120}
               fill="#8884d8"
