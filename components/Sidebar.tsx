@@ -84,7 +84,6 @@ const CollapsibleSidebar = () => {
                 width={20}
                 height={20}
                 className={clsx("h-5 w-5", {
-                  filter: pathname === item.href,
                   "ml-lg": isMinimized,
                 })}
               />
