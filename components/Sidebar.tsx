@@ -75,7 +75,7 @@ const CollapsibleSidebar = () => {
                     pathname === item.href,
                   "hover:brightness-0 hover:invert": pathname !== item.href,
                 },
-                isMinimized && "mr-xs px-0",
+                isMinimized && "!mr-xs !px-0",
               )}
             >
               <Image
