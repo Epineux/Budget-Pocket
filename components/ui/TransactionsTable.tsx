@@ -35,6 +35,7 @@ import {
   SelectValue,
 } from "./select";
 
+
 interface TransactionsTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: Array<TData & { category: string }>;
@@ -104,9 +105,9 @@ const TransactionsTable = <TData, TValue>({
   };
 
   return (
-    <div className="rounded-xl bg-white p-2xl">
+    <div className="rounded-xl bg-white p-2xl @container">
       <div className="flex items-center justify-between">
-        <div className="flex w-80 items-center gap-xs rounded-lg border border-beige-500 bg-white px-sm focus-within:ring-1 focus-within:ring-grey-900 focus-within:ring-offset-1">
+        <div className="flex w-56 items-center gap-xs rounded-lg border border-beige-500 bg-white px-sm focus-within:ring-1 focus-within:ring-grey-900 focus-within:ring-offset-1 @[750px]:w-80">
           <Input
             placeholder="Search..."
             value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
@@ -118,17 +119,24 @@ const TransactionsTable = <TData, TValue>({
           <Image
             src="/assets/images/icon-search.svg"
             alt="Search"
-            width={20}
-            height={20}
-            className="cursor-pointer"
+            width={16}
+            height={16}
           />
         </div>
         <div className="flex items-center gap-xl">
           <div className="flex items-center gap-xs">
-            <span className="text-standard grey-500 text-nowrap">Sort by</span>
+            <span className="text-standard text-nowrap text-grey-500">
+              Sort by
+            </span>
             <Select value={getCurrentValue()} onValueChange={handleSortChange}>
-              <SelectTrigger className="border-beige-500 focus:ring-1 focus:ring-grey-900 focus:ring-offset-1">
+              <SelectTrigger className="text-standard gap-md border-beige-500 text-grey-900 focus:ring-1 focus:ring-grey-900 focus:ring-offset-1 [&>svg]:hidden">
                 <SelectValue placeholder="Latest" />
+                <Image
+                  src={"/assets/images/icon-caret-down.svg"}
+                  alt="Dropdown"
+                  width={11}
+                  height={6}
+                />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="latest">Latest</SelectItem>
@@ -141,13 +149,21 @@ const TransactionsTable = <TData, TValue>({
             </Select>
           </div>
           <div className="flex items-center gap-xs">
-            <span className="text-standard grey-500 text-nowrap">Category</span>
+            <span className="text-standard text-nowrap text-grey-500">
+              Category
+            </span>
             <Select
               value={categoryFilter}
               onValueChange={(value) => setCategoryFilter(value)}
             >
-              <SelectTrigger className="border-beige-500 focus:ring-1 focus:ring-grey-900 focus:ring-offset-1">
+              <SelectTrigger className="text-standard gap-md border-beige-500 text-grey-900 focus:ring-1 focus:ring-grey-900 focus:ring-offset-1 [&>svg]:hidden">
                 <SelectValue placeholder="All Transactions" />
+                <Image
+                  src={"/assets/images/icon-caret-down.svg"}
+                  alt="Dropdown"
+                  width={11}
+                  height={6}
+                />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Transactions</SelectItem>
@@ -185,7 +201,6 @@ const TransactionsTable = <TData, TValue>({
             </TableRow>
           ))}
         </TableHeader>
-
         <TableBody>
           <tr className="h-xl"></tr>
           {table.getRowModel().rows?.length ? (
@@ -211,13 +226,15 @@ const TransactionsTable = <TData, TValue>({
           )}
         </TableBody>
       </Table>
-      <div className="flex items-center justify-between py-2xl">
+      <div className="mt-2xl flex items-center justify-between pt-2xl">
         <Button
           variant="outline"
           size="sm"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
-          className="h-10"
+          className={clsx("flex h-10 items-center gap-md px-md", {
+            "border-beige-500 text-grey-900": table.getCanPreviousPage(),
+          })}
         >
           <Image
             src="/assets/images/icon-caret-left.svg"
@@ -246,7 +263,7 @@ const TransactionsTable = <TData, TValue>({
                 variant={pageToDisplay === pageIndex ? "default" : "outline"}
                 size="sm"
                 onClick={() => table.setPageIndex(pageToDisplay)}
-                className={clsx("h-10 w-10 duration-0", {
+                className={clsx("h-10 w-10 border-beige-500 duration-0", {
                   "bg-grey-900 text-white": pageToDisplay === pageIndex,
                   "text-grey-900": pageToDisplay !== pageIndex,
                 })}
@@ -261,7 +278,9 @@ const TransactionsTable = <TData, TValue>({
           size="sm"
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
-          className="h-10"
+          className={clsx("flex h-10 items-center gap-md px-md", {
+            "border-beige-500 text-grey-900": table.getCanNextPage(),
+          })}
         >
           <span className="text-standard text-grey-900">Next</span>
           <Image
