@@ -37,13 +37,28 @@ export const columns: ColumnDef<Transaction>[] = [
     cell: ({ row }) => {
       const name = row.getValue("name") as string;
       const avatar = row.original.avatar;
+      const category = row.getValue("category") as string;
       return (
-        <div className="flex items-center gap-md">
-          <Avatar>
-            <AvatarImage src={avatar} alt="Avatar" />
-            <AvatarFallback>?</AvatarFallback>
-          </Avatar>
-          <p className="text-standard-bold text-grey-900">{name}</p>
+        <div>
+          {/* Desktop */}
+          <div className="hidden items-center gap-md @[640px]:flex">
+            <Avatar>
+              <AvatarImage src={avatar} alt="Avatar" />
+              <AvatarFallback>?</AvatarFallback>
+            </Avatar>
+            <p className="text-standard-bold text-grey-900">{name}</p>
+          </div>
+          {/* Mobile */}
+          <div className="flex items-center gap-md @[640px]:hidden">
+            <Avatar className="h-8 w-8">
+              <AvatarImage src={avatar} alt="Avatar" />
+              <AvatarFallback>?</AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col gap-2xs">
+              <p className="text-standard-bold text-grey-900">{name}</p>
+              <p className="text-small text-grey-500">{category}</p>
+            </div>
+          </div>
         </div>
       );
     },
@@ -55,7 +70,11 @@ export const columns: ColumnDef<Transaction>[] = [
     ),
     cell: ({ row }) => {
       const category = row.getValue("category") as string;
-      return <p className="text-small text-nowrap text-grey-500">{category}</p>;
+      return (
+        <p className="text-small hidden text-nowrap text-grey-500 @[640px]:table-cell">
+          {category}
+        </p>
+      );
     },
   },
   {
@@ -69,7 +88,9 @@ export const columns: ColumnDef<Transaction>[] = [
       const date = row.getValue("date");
       const readableDate = formatDateToReadable(date as string);
       return (
-        <p className="text-small text-nowrap text-grey-500">{readableDate}</p>
+        <p className="text-small hidden text-nowrap text-grey-500 @[640px]:table-cell">
+          {readableDate}
+        </p>
       );
     },
   },
@@ -82,20 +103,36 @@ export const columns: ColumnDef<Transaction>[] = [
     ),
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("amount"));
+      const date = row.getValue("date");
 
       const stringAmount = amount.toFixed(2).toString();
       const displayedPrice = stringAmount.includes("-")
         ? "-$" + stringAmount.slice(1)
         : "+$" + stringAmount;
       return (
-        <p
-          className={clsx(
-            "text-standard-bold text-nowrap text-right",
-            amount < 0 ? "text-grey-900" : "text-secondary-green",
-          )}
-        >
-          {displayedPrice}
-        </p>
+        <div>
+          <p
+            className={clsx(
+              "text-standard-bold hidden text-nowrap text-right @[640px]:block",
+              amount < 0 ? "text-grey-900" : "text-secondary-green",
+            )}
+          >
+            {displayedPrice}
+          </p>
+          <div className="flex flex-col gap-2xs @[640px]:hidden">
+            <p
+              className={clsx(
+                "text-standard-bold text-nowrap text-right @[640px]:hidden",
+                amount < 0 ? "text-grey-900" : "text-secondary-green",
+              )}
+            >
+              {displayedPrice}
+            </p>
+            <p className="text-small text-nowrap text-right text-grey-500">
+              {formatDateToReadable(date as string)}
+            </p>
+          </div>
+        </div>
       );
     },
   },
@@ -105,10 +142,13 @@ export const columns: ColumnDef<Transaction>[] = [
       const transaction = row.original;
 
       return (
-        <div className="flex justify-end">
+        <div className="hidden shrink-0 justify-end @[510px]:flex">
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-4 p-0">
+            <DropdownMenuTrigger asChild style={{ boxShadow: "none" }}>
+              <Button
+                variant="ghost"
+                className="h-8 w-4 p-0 focus:border focus:border-grey-900"
+              >
                 <span className="sr-only">Open menu</span>
                 <MoreVertical className="h-4 w-4 text-grey-900" />
               </Button>
