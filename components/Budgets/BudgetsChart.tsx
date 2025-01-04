@@ -1,6 +1,5 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import {
@@ -11,7 +10,6 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
-
 
 type BudgetItem = {
   name: string;
@@ -85,33 +83,31 @@ export default function DonutChart({
   };
 
   return (
-    <Card className="col-span-3 border-none shadow-none">
-      <CardContent className="flex justify-center p-0 xl:@[400px]:justify-start">
-        <ResponsiveContainer width={240} height={305}>
-          <PieChart>
-            <Pie
-              data={pieData}
-              cx="50%"
-              cy="55%"
-              innerRadius={76}
-              outerRadius={120}
-              fill="#8884d8"
-              paddingAngle={2}
-              dataKey="value"
-            >
-              {budgetsData.map((category) => (
-                <Cell
-                  key={`cell-${category.name}`}
-                  fill={category.theme}
-                  className="border-0 hover:brightness-110"
-                />
-              ))}
-              <Label content={CenterLabel} />
-            </Pie>
-            <Tooltip content={CustomTooltip} offset={10} />
-          </PieChart>
-        </ResponsiveContainer>
-      </CardContent>
-    </Card>
+    <div className="col-span-3 my-lg flex items-center justify-center">
+      <ResponsiveContainer width={240} height={240}>
+        <PieChart>
+          <Pie
+            data={pieData}
+            cx="50%"
+            cy="50%"
+            innerRadius={76}
+            outerRadius={120}
+            fill="#8884d8"
+            paddingAngle={2}
+            dataKey="value"
+          >
+            {budgetsData.map((category) => (
+              <Cell
+                key={`cell-${category.name}`}
+                fill={category.theme}
+                className="border-0 hover:brightness-110"
+              />
+            ))}
+            <Label content={CenterLabel} />
+          </Pie>
+          <Tooltip content={CustomTooltip} offset={10} />
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
   );
 }

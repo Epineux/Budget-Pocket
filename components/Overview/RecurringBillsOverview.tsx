@@ -6,7 +6,7 @@ import RecurringBillsItem from "./RecurringBillsItem";
 const RecurringBillsOverview = () => {
   const recurringBillsInfo = data.recurringBills;
   return (
-    <div className="rounded-xl bg-white p-2xl @container">
+    <div className="rounded-xl bg-white px-lg py-xl @container sm-490:px-2xl sm-490:py-2xl">
       <div className="flex justify-between">
         <h2 className="h2 text-grey-900">Recurring Bills</h2>
         <Link

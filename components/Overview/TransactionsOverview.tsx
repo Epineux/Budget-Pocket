@@ -6,7 +6,7 @@ import TransactionItem from "./TransactionItem";
 const TransactionsOverview = () => {
   const transactionsInfos = data.transactions;
   return (
-    <div className="rounded-xl bg-white p-2xl @container">
+    <div className="rounded-xl bg-white px-lg py-xl @container sm-490:px-2xl sm-490:py-2xl">
       <div className="flex justify-between">
         <h2 className="h2 text-grey-900">Transactions</h2>
         <Link

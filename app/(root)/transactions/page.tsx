@@ -1,5 +1,5 @@
 import { columns } from "@/components/Transactions/columns";
-import TransactionsTable from "@/components/ui/TransactionsTable";
+import TransactionsTable from "@/components/Transactions/TransactionsTable";
 import data from "@/constants/data.json";
 
 // Async function getData()

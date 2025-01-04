@@ -1,12 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import data from "../../constants/data.json";
-import BudgetsChart from "./BudgetsChart";
+import BudgetsChart from "../Budgets/BudgetsChart";
 
 const BudgetsOverview = () => {
   const budgetsData = data.budgets;
   return (
-    <div className="rounded-xl bg-white p-2xl @container">
+    <div className="rounded-xl bg-white px-lg py-xl @container sm-490:px-2xl sm-490:py-2xl">
       <div className="flex justify-between">
         <h2 className="h2 text-grey-900">Budgets</h2>
         <Link
@@ -22,7 +22,7 @@ const BudgetsOverview = () => {
           />
         </Link>
       </div>
-      <div className="grid grid-cols-1 @[400px]:grid-cols-4">
+      <div className="@[400px]:flex @[400px]:justify-around">
         <BudgetsChart budgetsData={budgetsData} />
         <ul className="grid grid-cols-2 gap-md @[400px]:my-12 @[400px]:grid-cols-1">
           {budgetsData.map((category) => (

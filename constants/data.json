@@ -401,21 +401,25 @@
   "budgets": [
     {
       "name": "Entertainment",
+      "spent": 15.0,
       "maximum": 50.0,
       "theme": "#277C78"
     },
     {
       "name": "Bills",
+      "spent": 150.0,
       "maximum": 750.0,
       "theme": "#82C9D7"
     },
     {
       "name": "Dining Out",
+      "spent": 133.0,
       "maximum": 75.0,
       "theme": "#F2CDAC"
     },
     {
       "name": "Personal Care",
+      "spent": 40.0,
       "maximum": 100.0,
       "theme": "#626070"
     }
