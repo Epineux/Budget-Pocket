@@ -1,4 +1,12 @@
 import Image from "next/image";
+import { Button } from "../ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 import { Progress } from "../ui/progress";
 import TransactionsBudget from "./TransactionsBudget";
 
@@ -14,7 +22,7 @@ type BudgetCategoryCardProps = {
 const BudgetCategoryCard = ({ category }: BudgetCategoryCardProps) => {
   const valueRemaining = category.maximum - category.spent;
   return (
-    <div className="flex flex-col gap-lg rounded-xl bg-white p-2xl @container">
+    <div className="flex flex-col gap-lg rounded-xl bg-white px-lg py-xl @container sm-490:p-2xl">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-md">
           <div
@@ -25,12 +33,28 @@ const BudgetCategoryCard = ({ category }: BudgetCategoryCardProps) => {
           ></div>
           <h2 className="h2 text-grey-900">{category.name}</h2>
         </div>
-        <Image
-          src="/assets/images/icon-ellipsis.svg"
-          width={14}
-          height={4}
-          alt="Edit Icon"
-        />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild style={{ boxShadow: "none" }}>
+            <Button
+              variant="ghost"
+              className="h-4 w-8 p-0 focus:border focus:border-grey-900"
+            >
+              <Image
+                src="/assets/images/icon-ellipsis.svg"
+                width={14}
+                height={4}
+                alt="Edit Icon"
+              />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem className="px-md">Edit Budget</DropdownMenuItem>
+            <DropdownMenuSeparator className="mx-md" />
+            <DropdownMenuItem className="px-md text-secondary-red">
+              Delete Budget
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       <div className="flex flex-col gap-md">
         <p className="text-standard text-grey-500">

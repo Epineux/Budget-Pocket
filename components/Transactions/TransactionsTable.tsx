@@ -1,4 +1,5 @@
 "use client";
+
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -10,6 +11,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { useSearchParams } from "next/navigation";
 import React from "react";
 import TableFilters from "./TableFilters";
 import TablePaginationControls from "./TablePaginationControls";
@@ -32,11 +34,14 @@ const TransactionsTable = <TData, TValue>({
   columns,
   data,
 }: TransactionsTableProps<TData, TValue>) => {
+  const searchParams = useSearchParams();
+  const initialCategory = searchParams.get("category") || "all";
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );
-  const [categoryFilter, setCategoryFilter] = React.useState<string>("all");
+  const [categoryFilter, setCategoryFilter] =
+    React.useState<string>(initialCategory);
 
   const table = useReactTable({
     data,

@@ -5,10 +5,10 @@ import BudgetSummaryItem from "./BudgetSummaryItem";
 const BudgetChartCard = () => {
   const budgetsData = data.budgets;
   return (
-    <div className="rounded-xl bg-white p-2xl @container">
+    <div className="rounded-xl bg-white px-lg py-xl @container sm-490:p-2xl">
       <div className="items-center justify-around @[550px]:flex">
         <BudgetsChart budgetsData={budgetsData} />
-        <div className="mt-3xl @[550px]:mt-0">
+        <div className="pt-3xl @[550px]:pt-0">
           <h2 className="h2 text-grey-900">Spending Summary</h2>
           <ul className="mt-xl grid grid-cols-1">
             {budgetsData.map((category, index) => (

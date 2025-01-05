@@ -3,7 +3,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { formatDateToReadable } from "@/utils/formatDateToReadable";
 import { ColumnDef } from "@tanstack/react-table";
 import clsx from "clsx";
-import { MoreVertical } from "lucide-react";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -11,10 +10,10 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Image from "next/image";
 
 export const transactionSchema = z.object({
   avatar: z.string().url(),
@@ -149,17 +148,23 @@ export const columns: ColumnDef<Transaction>[] = [
                 variant="ghost"
                 className="h-8 w-4 p-0 focus:border focus:border-grey-900"
               >
-                <span className="sr-only">Open menu</span>
-                <MoreVertical className="h-4 w-4 text-grey-900" />
+                <Image
+                  src="/assets/images/icon-ellipsis.svg"
+                  width={14}
+                  height={4}
+                  alt="Edit Icon"
+                  className="rotate-90"
+                />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel className="hidden">Actions</DropdownMenuLabel>
-              <DropdownMenuItem>View customer</DropdownMenuItem>
-              <DropdownMenuItem>View transaction details</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => {}}>Edit</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => {}}>Delete</DropdownMenuItem>
+              <DropdownMenuItem className="px-md">
+                Edit Transaction
+              </DropdownMenuItem>
+              <DropdownMenuSeparator className="mx-md" />
+              <DropdownMenuItem className="px-md text-secondary-red">
+                Delete Transaction
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

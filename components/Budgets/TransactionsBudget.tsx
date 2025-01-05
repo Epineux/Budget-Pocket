@@ -15,12 +15,12 @@ const TransactionsBudget = ({
     .filter((transaction) => transaction.category === transactionsCategory)
     .slice(0, 3);
   return (
-    <div className="rounded-xl bg-beige-100 p-lg">
+    <div className="rounded-xl bg-beige-100 p-md sm-490:p-lg">
       <div className="flex items-center justify-between">
         <h3 className="h3 text-grey-900">Latest Spending</h3>
         <Link
           className="text-standard flex items-center gap-sm text-grey-500 hover:brightness-50"
-          href="/transactions"
+          href={`/transactions?category=${transactionsCategory}`}
         >
           <span>See All</span>
           <Image

@@ -36,7 +36,7 @@ const TransactionsItemOverviewItem = ({ transaction, isLast }: Props) => {
 
   return (
     <li>
-      <div className="flex justify-between">
+      <div className="flex justify-between gap-md">
         <div className="flex items-center gap-md">
           <Avatar className="h-8 w-8">
             <AvatarImage src={transaction.avatar} alt="Avatar" />
@@ -44,7 +44,7 @@ const TransactionsItemOverviewItem = ({ transaction, isLast }: Props) => {
           </Avatar>
           <p className="text-small-bold text-grey-900">{transaction.name}</p>
         </div>
-        <div className="flex flex-col items-end gap-xs">
+        <div className="flex flex-col items-end gap-2xs">
           <DisplayPrice />
           <p className="text-small text-nowrap text-grey-500">{readableDate}</p>
         </div>
