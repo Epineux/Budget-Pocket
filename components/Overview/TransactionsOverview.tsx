@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import data from "../../constants/data.json";
-import TransactionItem from "./TransactionItem";
+import TransactionItem from "./TransactionsOverviewItem";
 
 const TransactionsOverview = () => {
   const transactionsInfos = data.transactions;

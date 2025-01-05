@@ -15,7 +15,7 @@ type Props = {
   isLast: boolean;
 };
 
-const TransactionItem = ({ transaction, isLast }: Props) => {
+const TransactionsItemOverviewItem = ({ transaction, isLast }: Props) => {
   const readableDate = formatDateToReadable(transaction.date);
   const DisplayPrice = () => {
     const stringAmount = transaction.amount.toFixed(2).toString();
@@ -54,4 +54,4 @@ const TransactionItem = ({ transaction, isLast }: Props) => {
   );
 };
 
-export default TransactionItem;
+export default TransactionsItemOverviewItem;

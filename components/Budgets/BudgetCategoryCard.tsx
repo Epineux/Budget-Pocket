@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Progress } from "../ui/progress";
+import TransactionsBudget from "./TransactionsBudget";
 
 type BudgetCategoryCardProps = {
   category: {
@@ -81,6 +82,7 @@ const BudgetCategoryCard = ({ category }: BudgetCategoryCardProps) => {
           </div>
         </div>
       </div>
+      <TransactionsBudget transactionsCategory={category.name} />
     </div>
   );
 };
