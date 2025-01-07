@@ -7,7 +7,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
-import PotDialogForm from "./PotDialogForm";
+import { PotDialogForm } from "./PotDialogForm";
 const NewPotDialog = () => {
   return (
     <Dialog>
@@ -23,8 +23,8 @@ const NewPotDialog = () => {
         <DialogHeader>
           <DialogTitle className="h1 text-grey-900">Add New Pot</DialogTitle>
           <DialogDescription className="text-standard py-sm text-grey-500">
-            Choose a category to set a spending Pot. These categories can help
-            you monitor spending.
+            Create a pot to set savings targets. These can help keep you on
+            track as you save for special purchases.
           </DialogDescription>
         </DialogHeader>
         <PotDialogForm />

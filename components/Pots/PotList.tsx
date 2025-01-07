@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Progress } from "../ui/progress";
+import SavingsDialog from "./SavingsDialog";
 
 const PotList = () => {
   const pots = data.pots;
@@ -78,20 +79,8 @@ const PotList = () => {
             </div>
           </div>
           <div className="flex gap-md">
-            <Button
-              className="text-standard-bold flex-1 rounded-lg border border-beige-100 bg-beige-100 hover:border-beige-500 hover:bg-beige-100/50"
-              variant="ghost"
-              size={"potCardButton"}
-            >
-              + Add Money
-            </Button>
-            <Button
-              className="text-standard-bold flex-1 rounded-lg border border-beige-100 bg-beige-100 hover:border-beige-500 hover:bg-beige-100/50"
-              variant="ghost"
-              size={"potCardButton"}
-            >
-              Withdraw
-            </Button>
+            <SavingsDialog newSavings="addition" pot={pot} />
+            <SavingsDialog newSavings="subtraction" pot={pot} />
           </div>
         </li>
       ))}

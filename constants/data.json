@@ -520,6 +520,26 @@
     {
       "name": "Orange",
       "color": "#BE6C49"
+    },
+    {
+      "name": "Green",
+      "color": "#277C78"
+    },
+    {
+      "name": "Yellow",
+      "color": "#F2CDAC"
+    },
+    {
+      "name": "Cyan",
+      "color": "#82C9D7"
+    },
+    {
+      "name": "Navy",
+      "color": "#626070"
+    },
+    {
+      "name": "Red",
+      "color": "#C94736"
     }
   ]
 }

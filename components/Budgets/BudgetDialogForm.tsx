@@ -156,7 +156,7 @@ export function BudgetDialogForm() {
           )}
         />
         <Button className="!mt-2xl h-12 w-full" type="submit">
-          Submit
+          Add Budget
         </Button>
       </form>
     </Form>
