@@ -473,6 +473,64 @@
       "theme": "#82C9D7"
     }
   ],
+  "recurringBillsTable": [
+    {
+      "dueDate": "2nd",
+      "amount": 100.0,
+      "name": "Spark Electric Solutions",
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "paid": true
+    },
+    {
+      "dueDate": "3rd",
+      "amount": 30.0,
+      "name": "Serenity Spa & Wellness",
+      "avatar": "./assets/images/avatars/serenity-spa-and-wellness.jpg",
+      "paid": true
+    },
+    {
+      "dueDate": "4th",
+      "amount": 50.0,
+      "name": "Elevate Education",
+      "avatar": "./assets/images/avatars/elevate-education.jpg",
+      "paid": true
+    },
+    {
+      "dueDate": "11th",
+      "amount": 10.0,
+      "name": "Pixel Playground",
+      "avatar": "./assets/images/avatars/pixel-playground.jpg",
+      "paid": false
+    },
+    {
+      "dueDate": "21st",
+      "amount": 9.99,
+      "name": "Nimbus Data Storage",
+      "avatar": "./assets/images/avatars/nimbus-data-storage.jpg",
+      "paid": false
+    },
+    {
+      "dueDate": "23rd",
+      "amount": 49.99,
+      "name": "ByteWise",
+      "avatar": "./assets/images/avatars/byte-wise.jpg",
+      "paid": false
+    },
+    {
+      "dueDate": "29th",
+      "amount": 35.0,
+      "name": "EcoFuel Energy",
+      "avatar": "./assets/images/avatars/eco-fuel-energy.jpg",
+      "paid": false
+    },
+    {
+      "dueDate": "30th",
+      "amount": 100.0,
+      "name": "Aqua Flow Utilities",
+      "avatar": "./assets/images/avatars/aqua-flow-utilities.jpg",
+      "paid": false
+    }
+  ],
   "categories": [
     "Shopping",
     "Dining Out",

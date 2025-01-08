@@ -1,4 +1,4 @@
-import { columns } from "@/components/Transactions/columns";
+import { columns } from "@/components/Transactions/transactionsColumns";
 import TransactionsTable from "@/components/Transactions/TransactionsTable";
 import data from "@/constants/data.json";
 

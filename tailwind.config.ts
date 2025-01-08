@@ -42,6 +42,7 @@ export default {
         gold: "#CAB361",
         orange: "#BE6C49",
       },
+
       spacing: {
         "2xs": "0.25rem",
         xs: "0.5rem",
