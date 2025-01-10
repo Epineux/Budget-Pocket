@@ -513,14 +513,14 @@
       "dueDate": "23rd",
       "amount": 49.99,
       "name": "ByteWise",
-      "avatar": "./assets/images/avatars/byte-wise.jpg",
+      "avatar": "./assets/images/avatars/bytewise.jpg",
       "paid": false
     },
     {
       "dueDate": "29th",
       "amount": 35.0,
       "name": "EcoFuel Energy",
-      "avatar": "./assets/images/avatars/eco-fuel-energy.jpg",
+      "avatar": "./assets/images/avatars/ecofuel-energy.jpg",
       "paid": false
     },
     {
@@ -529,6 +529,111 @@
       "name": "Aqua Flow Utilities",
       "avatar": "./assets/images/avatars/aqua-flow-utilities.jpg",
       "paid": false
+    },
+    {
+      "dueDate": "5th",
+      "amount": 85.0,
+      "name": "Spark Electric Solutions",
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "paid": false
+    },
+    {
+      "dueDate": "10th",
+      "amount": 65.5,
+      "name": "Serenity Spa & Wellness",
+      "avatar": "./assets/images/avatars/serenity-spa-and-wellness.jpg",
+      "paid": false
+    },
+    {
+      "dueDate": "7th",
+      "amount": 40.0,
+      "name": "Elevate Education",
+      "avatar": "./assets/images/avatars/elevate-education.jpg",
+      "paid": true
+    },
+    {
+      "dueDate": "12th",
+      "amount": 25.0,
+      "name": "Pixel Playground",
+      "avatar": "./assets/images/avatars/pixel-playground.jpg",
+      "paid": true
+    },
+    {
+      "dueDate": "6th",
+      "amount": 120.0,
+      "name": "Nimbus Data Storage",
+      "avatar": "./assets/images/avatars/nimbus-data-storage.jpg",
+      "paid": true
+    },
+    {
+      "dueDate": "13th",
+      "amount": 15.99,
+      "name": "ByteWise",
+      "avatar": "./assets/images/avatars/bytewise.jpg",
+      "paid": true
+    },
+    {
+      "dueDate": "14th",
+      "amount": 47.0,
+      "name": "EcoFuel Energy",
+      "avatar": "./assets/images/avatars/ecofuel-energy.jpg",
+      "paid": false
+    },
+    {
+      "dueDate": "22nd",
+      "amount": 99.99,
+      "name": "Aqua Flow Utilities",
+      "avatar": "./assets/images/avatars/aqua-flow-utilities.jpg",
+      "paid": true
+    },
+    {
+      "dueDate": "9th",
+      "amount": 70.0,
+      "name": "Spark Electric Solutions",
+      "avatar": "./assets/images/avatars/spark-electric-solutions.jpg",
+      "paid": false
+    },
+    {
+      "dueDate": "15th",
+      "amount": 29.0,
+      "name": "Serenity Spa & Wellness",
+      "avatar": "./assets/images/avatars/serenity-spa-and-wellness.jpg",
+      "paid": true
+    },
+    {
+      "dueDate": "27th",
+      "amount": 65.0,
+      "name": "Elevate Education",
+      "avatar": "./assets/images/avatars/elevate-education.jpg",
+      "paid": false
+    },
+    {
+      "dueDate": "17th",
+      "amount": 12.5,
+      "name": "Pixel Playground",
+      "avatar": "./assets/images/avatars/pixel-playground.jpg",
+      "paid": true
+    },
+    {
+      "dueDate": "8th",
+      "amount": 35.99,
+      "name": "Nimbus Data Storage",
+      "avatar": "./assets/images/avatars/nimbus-data-storage.jpg",
+      "paid": false
+    },
+    {
+      "dueDate": "20th",
+      "amount": 55.0,
+      "name": "ByteWise",
+      "avatar": "./assets/images/avatars/bytewise.jpg",
+      "paid": true
+    },
+    {
+      "dueDate": "18th",
+      "amount": 42.0,
+      "name": "EcoFuel Energy",
+      "avatar": "./assets/images/avatars/ecofuel-energy.jpg",
+      "paid": true
     }
   ],
   "categories": [

@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "../ui/select";
 
-type SortValue = "latest" | "oldest" | "atoz" | "ztoa" | "highest" | "lowest";
+type SortValue = "earliest" | "latest" | "atoz" | "ztoa" | "highest" | "lowest";
 
 interface BillsTableFiltersProps<TData> {
   table: TanstackTable<TData>;
@@ -19,11 +19,11 @@ interface BillsTableFiltersProps<TData> {
 const BillsSort = <TData,>({ table }: BillsTableFiltersProps<TData>) => {
   const handleSortChange = (value: SortValue) => {
     switch (value) {
-      case "latest":
-        table.setSorting([{ id: "date", desc: true }]);
+      case "earliest":
+        table.setSorting([{ id: "dueDate", desc: false }]);
         break;
-      case "oldest":
-        table.setSorting([{ id: "date", desc: false }]);
+      case "latest":
+        table.setSorting([{ id: "dueDate", desc: true }]);
         break;
       case "atoz":
         table.setSorting([{ id: "name", desc: false }]);
@@ -42,13 +42,13 @@ const BillsSort = <TData,>({ table }: BillsTableFiltersProps<TData>) => {
 
   const getCurrentValue = () => {
     const sorting = table.getState().sorting[0];
-    if (!sorting) return "latest";
+    if (!sorting) return "earliest";
 
     const { id, desc } = sorting;
-    if (id === "date") return desc ? "latest" : "oldest";
+    if (id === "dueDate") return desc ? "latest" : "earliest";
     if (id === "name") return desc ? "ztoa" : "atoz";
     if (id === "amount") return desc ? "highest" : "lowest";
-    return "latest";
+    return "earliest";
   };
 
   return (
@@ -71,13 +71,13 @@ const BillsSort = <TData,>({ table }: BillsTableFiltersProps<TData>) => {
       </div>
       <div className="flex flex-shrink-0 items-center gap-xl">
         <div className="flex items-center gap-xs">
-          <span className="text-standard hidden text-nowrap text-grey-500 @[640px]:inline">
+          <span className="text-standard hidden text-nowrap text-grey-500 @[510px]:inline">
             Sort by
           </span>
           <Select value={getCurrentValue()} onValueChange={handleSortChange}>
             <SelectTrigger className="border-0 border-beige-500 focus:ring-1 focus:ring-grey-900 focus:ring-offset-1 @[510px]:border [&>svg]:hidden ">
               <div className="text-standard hidden gap-md text-grey-900 @[510px]:flex">
-                <SelectValue placeholder="Latest" />
+                <SelectValue placeholder="Earliest" />
                 <Image
                   src={"/assets/images/icon-caret-down.svg"}
                   alt="Dropdown"
@@ -96,8 +96,8 @@ const BillsSort = <TData,>({ table }: BillsTableFiltersProps<TData>) => {
             </SelectTrigger>
 
             <SelectContent>
+              <SelectItem value="earliest">Earliest</SelectItem>
               <SelectItem value="latest">Latest</SelectItem>
-              <SelectItem value="oldest">Oldest</SelectItem>
               <SelectItem value="atoz">A to Z</SelectItem>
               <SelectItem value="ztoa">Z to A</SelectItem>
               <SelectItem value="highest">Highest</SelectItem>

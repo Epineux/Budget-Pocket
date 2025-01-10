@@ -3,7 +3,7 @@ import data from "../../constants/data.json";
 const BillsSummary = () => {
   const RecurringBillsInfo = data.recurringBills;
   return (
-    <div className="rounded-xl bg-white p-lg">
+    <div className="w-full rounded-xl bg-white p-lg">
       <h3 className="h3 text-grey-900">Summary</h3>
       <ul className="mt-lg">
         {RecurringBillsInfo.map((recurringBill) => (

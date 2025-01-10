@@ -36,7 +36,9 @@ const TransactionsTable = <TData, TValue>({
 }: TransactionsTableProps<TData, TValue>) => {
   const searchParams = useSearchParams();
   const initialCategory = searchParams.get("category") || "all";
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [sorting, setSorting] = React.useState<SortingState>([
+    { id: "date", desc: true },
+  ]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );

@@ -7,7 +7,7 @@ import TransactionsOverview from "@/components/Overview/TransactionsOverview";
 export default function Home() {
   return (
     <main className="px-md py-xl @container sm-490:px-3xl sm-490:py-2xl">
-      <h1 className="h1 pb-lg text-grey-900">Overview</h1>
+      <h1 className="h1 text-grey-900 md:pb-lg">Overview</h1>
       <section className="mt-2xl grid grid-cols-1 gap-sm @[600px]:grid-cols-3 sm-490:gap-xl">
         <BalanceInfo title="Current Balance" amount={4836} currency="$" />
         <BalanceInfo title="Income" amount={3814.25} currency="$" />

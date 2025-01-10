@@ -32,7 +32,9 @@ const BillsTable = <TData, TValue>({
   columns,
   data,
 }: BillsTableProps<TData, TValue>) => {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [sorting, setSorting] = React.useState<SortingState>([
+    { id: "dueDate", desc: false },
+  ]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );
@@ -54,7 +56,7 @@ const BillsTable = <TData, TValue>({
   return (
     <div className="rounded-xl bg-white px-lg py-xl @container sm-490:px-2xl sm-490:py-2xl">
       <BillsSort table={table} />
-      <Table className="mt-xl">
+      <Table className="mt-lg sm-490:mt-xl">
         <TableHeader className="hidden @[590px]:table-header-group">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id} className="border-grey-100">
@@ -74,7 +76,6 @@ const BillsTable = <TData, TValue>({
           ))}
         </TableHeader>
         <TableBody>
-          <tr className="h-xl"></tr>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow

@@ -12,8 +12,8 @@ const page = () => {
         <h1 className="h1 text-grey-900">Recurring Bills</h1>
         {/* <NewRecurringBillDialog /> */}
       </div>
-      <section className="mt-2xl flex gap-xl">
-        <div className="flex flex-[2] flex-col gap-xl">
+      <section className="mt-2xl flex flex-col gap-xl @[800px]:flex-row">
+        <div className="flex flex-[2] flex-col gap-sm @[500px]:flex-row @[500px]:gap-xl @[800px]:flex-col">
           <TotalBills />
           <BillsSummary />
         </div>
