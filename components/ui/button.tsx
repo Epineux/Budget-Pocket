@@ -28,6 +28,7 @@ const buttonVariants = cva(
         icon: "h-10 w-10",
         topPageButton: "px-md py-md",
         potCardButton: "px-md py-md",
+        loginButton: "py-md",
       },
     },
     defaultVariants: {

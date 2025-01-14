@@ -139,7 +139,7 @@ export const columns: ColumnDef<RecurringBill>[] = [
                 ? dayOfMonth >= parseDueDate(dueDate)
                   ? "text-secondary-red"
                   : "text-grey-900"
-                : "text-green-500",
+                : "text-secondary-green",
             )}
           >
             ${stringAmount}
