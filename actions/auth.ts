@@ -1,7 +1,7 @@
 "use server";
 
 import { createSession, deleteSession } from "@/lib/session";
-import { loginSchema } from "@/schemas/loginSchema";
+import { loginSchema } from "@/schemas/authSchema";
 import { redirect } from "next/navigation";
 
 const testUser = {

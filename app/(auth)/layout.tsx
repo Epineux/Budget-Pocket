@@ -6,7 +6,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <HeaderAuth />
-      <div className="flex min-h-screen gap-3xl bg-beige-100 px-md sm-490:p-lg">
+      <div className="flex min-h-[calc(100vh-70px)] gap-3xl bg-beige-100 px-md sm-490:p-lg lg:min-h-screen">
         <section className="relative hidden w-[420px] lg:block xl:w-[520px]">
           <Image
             src="/assets/images/illustration-authentication.svg"
@@ -16,7 +16,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             priority
           />
         </section>
-        <section className="mt-[70px] flex flex-1 items-center justify-center lg:mt-0">
+        <section className=" flex flex-1 items-center justify-center">
           {children}
         </section>
       </div>

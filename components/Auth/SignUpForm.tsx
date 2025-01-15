@@ -1,6 +1,5 @@
 "use client";
 
-import { login } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -12,12 +11,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { loginSchema } from "@/schemas/loginSchema";
+import { signUpSchema } from "@/schemas/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import PasswordField from "./PasswordField";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -34,10 +33,11 @@ function SubmitButton() {
 }
 
 export function SignUpForm() {
-  const [state, loginAction] = useActionState(login, undefined);
-  const form = useForm<z.infer<typeof loginSchema>>({
-    resolver: zodResolver(loginSchema),
+  // const [state, loginAction] = useActionState(login, undefined);
+  const form = useForm<z.infer<typeof signUpSchema>>({
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
     },
@@ -45,21 +45,42 @@ export function SignUpForm() {
 
   return (
     <Form {...form}>
-      <form action={loginAction} className="mt-2xl">
+      <form className="mt-2xl">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem className="space-y-1">
+              <FormLabel className="!text-small-bold text-grey-500">
+                Name
+              </FormLabel>
+              <FormControl>
+                <Input {...field} type="name" className="border-beige-500" />
+              </FormControl>
+              {/* {state?.errors?.name && (
+                <p className="text-red-500">{state.errors.name}</p>
+              )} */}
+              <FormDescription className="hidden">
+                Enter your name
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem className="space-y-1">
+            <FormItem className="mt-md space-y-1">
               <FormLabel className="!text-small-bold text-grey-500">
                 Email
               </FormLabel>
               <FormControl>
                 <Input {...field} type="email" className="border-beige-500" />
               </FormControl>
-              {state?.errors?.email && (
+              {/* {state?.errors?.email && (
                 <p className="text-red-500">{state.errors.email}</p>
-              )}
+              )} */}
               <FormDescription className="hidden">
                 Enter your email address
               </FormDescription>
@@ -76,15 +97,11 @@ export function SignUpForm() {
                 Password
               </FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  type="password"
-                  className="border-beige-500"
-                />
+                <PasswordField {...field} />
               </FormControl>
-              {state?.errors?.password && (
+              {/* {state?.errors?.password && (
                 <p className="text-red-500">{state.errors.password}</p>
-              )}
+              )} */}
               <FormDescription className="hidden">
                 Enter your password
               </FormDescription>

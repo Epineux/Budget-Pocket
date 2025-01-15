@@ -12,31 +12,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { loginSchema } from "@/schemas/loginSchema";
+import { loginSchema } from "@/schemas/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
-import { useActionState, useState } from "react";
-import { useFormStatus } from "react-dom";
+import { useActionState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-function SubmitButton() {
-  const { pending } = useFormStatus();
-  return (
-    <Button
-      className="!text-standard-bold mt-2xl w-full bg-grey-900 text-white"
-      size="loginButton"
-      disabled={pending}
-      type="submit"
-    >
-      Login
-    </Button>
-  );
-}
+import PasswordField from "./PasswordField";
 
 export function LoginForm() {
-  const [state, loginAction] = useActionState(login, undefined);
-  const [showPassword, setShowPassword] = useState(false);
+  const [state, loginAction, isPending] = useActionState(login, undefined);
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -78,25 +62,7 @@ export function LoginForm() {
                 Password
               </FormLabel>
               <FormControl>
-                <div className="relative flex items-center">
-                  <Input
-                    {...field}
-                    type={showPassword ? "text" : "password"}
-                    className="border-beige-500"
-                  />
-                  <Image
-                    src={
-                      showPassword
-                        ? "/assets/images/icon-hide-password.svg"
-                        : "/assets/images/icon-show-password.svg"
-                    }
-                    width={20}
-                    height={20}
-                    alt="Show/Hide Password Icon"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-md cursor-pointer"
-                  />
-                </div>
+                <PasswordField {...field} />
               </FormControl>
               {state?.errors?.password && (
                 <p className="text-red-500">{state.errors.password}</p>
@@ -108,7 +74,14 @@ export function LoginForm() {
             </FormItem>
           )}
         />
-        <SubmitButton />
+        <Button
+          className="!text-standard-bold mt-2xl w-full bg-grey-900 text-white"
+          size="loginButton"
+          disabled={isPending}
+          type="submit"
+        >
+          Login
+        </Button>
       </form>
     </Form>
   );

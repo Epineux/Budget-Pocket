@@ -1,8 +1,9 @@
+import { env } from "@/utils/env";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import "server-only";
 
-const secretKey = process.env.SESSION_SECRET;
+const secretKey = env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
 
 export async function createSession(userId: string) {
