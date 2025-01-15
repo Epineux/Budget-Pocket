@@ -138,7 +138,7 @@ export const columns: ColumnDef<Transaction>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const transaction = row.original;
+      // const transaction = row.original;
 
       return (
         <div className="hidden shrink-0 justify-end @[510px]:flex">

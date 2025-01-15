@@ -1,6 +1,6 @@
 "use client";
 
-import { login } from "@/actions/auth";
+import { handleLogin } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -20,7 +20,10 @@ import { z } from "zod";
 import PasswordField from "./PasswordField";
 
 export function LoginForm() {
-  const [state, loginAction, isPending] = useActionState(login, undefined);
+  const [state, loginAction, isPending] = useActionState(
+    handleLogin,
+    undefined,
+  );
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {

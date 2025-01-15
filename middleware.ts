@@ -2,7 +2,6 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { decrypt } from "./lib/session";
 
-// Protected routes ?
 const protectedRoutes = [
   "/",
   "/pots",
@@ -19,6 +18,9 @@ export default async function middleware(req: NextRequest) {
 
   const cookie = (await cookies()).get("session")?.value;
   const session = await decrypt(cookie);
+  if (!session) {
+    console.log("Invalid session or no session found");
+  }
 
   if (isProtectedRoute && !session?.userId) {
     return NextResponse.redirect(new URL("/login", req.nextUrl));

@@ -10,7 +10,7 @@ const testUser = {
   password: "12345678",
 };
 
-export async function login(prevState: any, formData: FormData) {
+export async function handleLogin(prevState: any, formData: FormData) {
   const result = loginSchema.safeParse(Object.fromEntries(formData));
 
   if (!result.success) {

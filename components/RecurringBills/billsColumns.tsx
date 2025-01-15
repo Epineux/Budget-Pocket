@@ -151,7 +151,7 @@ export const columns: ColumnDef<RecurringBill>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const recurringBill = row.original;
+      // const recurringBill = row.original;
 
       return (
         <div className="hidden shrink-0 justify-end @[510px]:flex">

@@ -1,5 +1,4 @@
 "use client";
-
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import {
@@ -9,12 +8,24 @@ import {
   PieChart,
   ResponsiveContainer,
   Tooltip,
+  TooltipProps,
 } from "recharts";
 
 type BudgetItem = {
   name: string;
   maximum: number;
   theme: string;
+};
+
+type Props = {
+  viewBox?: {
+    x?: number;
+    y?: number;
+    width?: number;
+    height?: number;
+    cx?: number;
+    cy?: number;
+  };
 };
 
 export default function DonutChart({
@@ -26,12 +37,13 @@ export default function DonutChart({
     name: budget.name,
     value: budget.maximum,
   }));
+
   const totalValue = budgetsData.reduce(
     (sum: number, entry: BudgetItem) => sum + entry.maximum,
     0,
   );
 
-  const CustomTooltip = ({ active, payload }: any) => {
+  const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
     if (active && payload?.[0]) {
       const data = payload[0].payload;
       return (
@@ -47,35 +59,30 @@ export default function DonutChart({
     return null;
   };
 
-  const CenterLabel = ({ viewBox }: any) => {
+  const CenterLabel = (props: Props) => {
     const [isVisible, setIsVisible] = useState(false);
+    const { cx = 0, cy = 0 } = props.viewBox || {};
+
     useEffect(() => {
       setTimeout(() => {
         setIsVisible(true);
       }, 1500);
     }, []);
 
-    if (!viewBox?.cx || !viewBox?.cy) return null;
-
     return (
       <text
-        x={viewBox.cx}
-        y={viewBox.cy}
+        x={cx}
+        y={cy}
         textAnchor="middle"
         dominantBaseline="middle"
         className={clsx("opacity-0 transition-opacity duration-1000 ease-in", {
           "opacity-100": isVisible,
         })}
       >
-        <tspan
-          x={viewBox.cx}
-          dy="-0.5em"
-          className="h2 font-bold"
-          fill="#201f24"
-        >
+        <tspan x={cx} dy="-0.5em" className="h2 font-bold" fill="#201f24">
           $338
         </tspan>
-        <tspan x={viewBox.cx} dy="1.8em" className="text-small" fill=" #696868">
+        <tspan x={cx} dy="1.8em" className="text-small" fill="#696868">
           of ${totalValue} limit
         </tspan>
       </text>

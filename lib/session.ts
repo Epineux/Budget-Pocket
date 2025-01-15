@@ -3,6 +3,11 @@ import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import "server-only";
 
+type SessionPayload = {
+  userId: string;
+  expiresAt: Date;
+};
+
 const secretKey = env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
 
@@ -23,10 +28,6 @@ export async function deleteSession() {
   (await cookies()).delete("session");
 }
 
-type SessionPayload = {
-  userId: string;
-  expiresAt: Date;
-};
 
 export async function encrypt(payload: SessionPayload) {
   return new SignJWT(payload)

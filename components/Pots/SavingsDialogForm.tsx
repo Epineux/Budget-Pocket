@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { ControllerRenderProps, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Input } from "../ui/input";
 
@@ -49,7 +49,15 @@ export function SavingsDialogForm({
     }
   }, [dialogOpen, form]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, field: any) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: ControllerRenderProps<
+      {
+        newAmount: number;
+      },
+      "newAmount"
+    >,
+  ) => {
     const cleanedValue = e.target.value.replace(/[^\d.]/g, "");
     const newAmount = parseFloat(cleanedValue) || 0;
 
