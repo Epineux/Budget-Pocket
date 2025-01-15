@@ -150,7 +150,7 @@ export const columns: ColumnDef<RecurringBill>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
+    cell: ({}) => {
       // const recurringBill = row.original;
 
       return (

@@ -137,7 +137,7 @@ export const columns: ColumnDef<Transaction>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
+    cell: ({}) => {
       // const transaction = row.original;
 
       return (
