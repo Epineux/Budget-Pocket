@@ -23,7 +23,7 @@ const PasswordField = (props: ControllerRenderProps<FieldValues, string>) => {
         height={20}
         alt="Show/Hide Password Icon"
         onClick={() => setShowPassword(!showPassword)}
-        className="absolute right-md cursor-pointer"
+        className="absolute right-md h-[14px] w-auto cursor-pointer"
       />
     </div>
   );

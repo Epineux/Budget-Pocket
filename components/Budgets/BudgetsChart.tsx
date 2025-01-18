@@ -1,15 +1,7 @@
 "use client";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
-import {
-  Cell,
-  Label,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-  TooltipProps,
-} from "recharts";
+import { Cell, Label, Pie, PieChart, Tooltip, TooltipProps } from "recharts";
 
 type BudgetItem = {
   name: string;
@@ -91,30 +83,28 @@ export default function DonutChart({
 
   return (
     <div className="col-span-3 my-lg flex items-center justify-center">
-      <ResponsiveContainer width={240} height={240}>
-        <PieChart>
-          <Pie
-            data={pieData}
-            cx="50%"
-            cy="50%"
-            innerRadius={76}
-            outerRadius={120}
-            fill="#8884d8"
-            paddingAngle={2}
-            dataKey="value"
-          >
-            {budgetsData.map((category) => (
-              <Cell
-                key={`cell-${category.name}`}
-                fill={category.theme}
-                className="border-0 hover:brightness-110"
-              />
-            ))}
-            <Label content={CenterLabel} />
-          </Pie>
-          <Tooltip content={CustomTooltip} offset={10} />
-        </PieChart>
-      </ResponsiveContainer>
+      <PieChart width={240} height={240}>
+        <Pie
+          data={pieData}
+          cx="50%"
+          cy="50%"
+          innerRadius={76}
+          outerRadius={120}
+          fill="#8884d8"
+          paddingAngle={2}
+          dataKey="value"
+        >
+          {budgetsData.map((category) => (
+            <Cell
+              key={`cell-${category.name}`}
+              fill={category.theme}
+              className="border-0 hover:brightness-110"
+            />
+          ))}
+          <Label content={CenterLabel} />
+        </Pie>
+        <Tooltip content={CustomTooltip} offset={10} />
+      </PieChart>
     </div>
   );
 }

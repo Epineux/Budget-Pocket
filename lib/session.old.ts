@@ -1,4 +1,4 @@
-import { env } from "@/utils/env";
+import { env } from "@/schemas/env";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import "server-only";
@@ -28,7 +28,6 @@ export async function deleteSession() {
   (await cookies()).delete("session");
 }
 
-
 export async function encrypt(payload: SessionPayload) {
   return new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
@@ -48,7 +47,7 @@ export async function decrypt(session: string | undefined = "") {
     });
     return payload;
   } catch (error) {
-    console.log("Failed to verify session", error);
+    console.error("Error decrypting session:", error);
     return null;
   }
 }

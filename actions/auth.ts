@@ -1,18 +1,13 @@
 "use server";
 
-import { createSession, deleteSession } from "@/lib/session";
-import { loginSchema } from "@/schemas/authSchema";
+import { createClient } from "@/lib/supabase";
+import { loginSchema, signUpSchema } from "@/schemas/authSchema";
 import { redirect } from "next/navigation";
 
-const testUser = {
-  id: "1",
-  email: "contact@cosdensolutions.io",
-  password: "12345678",
-};
-
 export async function handleLogin(prevState: any, formData: FormData) {
-  const result = loginSchema.safeParse(Object.fromEntries(formData));
+  const supabase = await createClient();
 
+  const result = loginSchema.safeParse(Object.fromEntries(formData));
   if (!result.success) {
     return {
       errors: result.error.flatten().fieldErrors,
@@ -21,19 +16,65 @@ export async function handleLogin(prevState: any, formData: FormData) {
 
   const { email, password } = result.data;
 
-  if (email !== testUser.email || password !== testUser.password) {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) {
     return {
       errors: {
-        email: ["Invalid email or password"],
+        email: [error.message],
       },
     };
   }
-  await createSession(testUser.id);
-
   redirect("/");
 }
 
+export async function handleSignUp(prevState: any, formData: FormData) {
+  const supabase = await createClient();
+
+  const result = signUpSchema.safeParse(Object.fromEntries(formData));
+  if (!result.success) {
+    return {
+      errors: result.error.flatten().fieldErrors,
+    };
+  }
+  const { name, email, password } = result.data;
+
+  const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        name: name,
+      },
+    },
+  });
+  if (signUpError) {
+    return {
+      errors: {
+        email: [signUpError.message],
+      },
+    };
+  }
+
+  if (signUpData?.user) {
+    redirect("/");
+  }
+}
 export async function logout() {
-  await deleteSession();
-  redirect("/login");
+  const supabase = await createClient();
+
+  try {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("Error signing out:", error);
+      return { error: error.message };
+    }
+    return { success: true };
+  } catch (error) {
+    console.error("Error in logout:", error);
+    return { error: "Failed to logout" };
+  }
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { handleSignUp } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -13,27 +14,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { signUpSchema } from "@/schemas/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFormStatus } from "react-dom";
+import { useActionState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import PasswordField from "./PasswordField";
 
-function SubmitButton() {
-  const { pending } = useFormStatus();
-  return (
-    <Button
-      className="!text-standard-bold mt-2xl w-full bg-grey-900 text-white"
-      size="loginButton"
-      disabled={pending}
-      type="submit"
-    >
-      Login
-    </Button>
-  );
-}
-
 export function SignUpForm() {
-  // const [state, loginAction] = useActionState(login, undefined);
+  const [state, signUpAction, isPending] = useActionState(
+    handleSignUp,
+    undefined,
+  );
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -45,7 +35,7 @@ export function SignUpForm() {
 
   return (
     <Form {...form}>
-      <form className="mt-2xl">
+      <form action={signUpAction} className="mt-2xl">
         <FormField
           control={form.control}
           name="name"
@@ -57,9 +47,9 @@ export function SignUpForm() {
               <FormControl>
                 <Input {...field} type="name" className="border-beige-500" />
               </FormControl>
-              {/* {state?.errors?.name && (
+              {state?.errors?.name && (
                 <p className="text-red-500">{state.errors.name}</p>
-              )} */}
+              )}
               <FormDescription className="hidden">
                 Enter your name
               </FormDescription>
@@ -78,9 +68,9 @@ export function SignUpForm() {
               <FormControl>
                 <Input {...field} type="email" className="border-beige-500" />
               </FormControl>
-              {/* {state?.errors?.email && (
+              {state?.errors?.email && (
                 <p className="text-red-500">{state.errors.email}</p>
-              )} */}
+              )}
               <FormDescription className="hidden">
                 Enter your email address
               </FormDescription>
@@ -99,9 +89,9 @@ export function SignUpForm() {
               <FormControl>
                 <PasswordField {...field} />
               </FormControl>
-              {/* {state?.errors?.password && (
+              {state?.errors?.password && (
                 <p className="text-red-500">{state.errors.password}</p>
-              )} */}
+              )}
               <FormDescription className="hidden">
                 Enter your password
               </FormDescription>
@@ -109,7 +99,14 @@ export function SignUpForm() {
             </FormItem>
           )}
         />
-        <SubmitButton />
+        <Button
+          className="!text-standard-bold mt-2xl w-full bg-grey-900 text-white"
+          size="loginButton"
+          disabled={isPending}
+          type="submit"
+        >
+          Sign Up
+        </Button>
       </form>
     </Form>
   );
