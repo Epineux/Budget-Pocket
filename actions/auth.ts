@@ -1,7 +1,8 @@
 "use server";
 
-import { createClient } from "@/lib/supabase";
 import { loginSchema, signUpSchema } from "@/schemas/authSchema";
+import { createClient } from "@/utils/supabase/server";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function handleLogin(prevState: any, formData: FormData) {
@@ -16,7 +17,7 @@ export async function handleLogin(prevState: any, formData: FormData) {
 
   const { email, password } = result.data;
 
-  const { data, error } = await supabase.auth.signInWithPassword({
+  const { error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
@@ -28,6 +29,7 @@ export async function handleLogin(prevState: any, formData: FormData) {
       },
     };
   }
+  revalidatePath("/", "layout");
   redirect("/");
 }
 
@@ -60,6 +62,7 @@ export async function handleSignUp(prevState: any, formData: FormData) {
   }
 
   if (signUpData?.user) {
+    revalidatePath("/", "layout");
     redirect("/");
   }
 }
