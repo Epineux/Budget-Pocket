@@ -62,9 +62,9 @@ export async function handleSignUp(prevState: any, formData: FormData) {
   }
 
   if (signUpData?.user) {
-    revalidatePath("/", "layout");
-    redirect("/");
+    return { success: true };
   }
+  return { errors: { email: ["Something went wrong"] } };
 }
 export async function logout() {
   const supabase = await createClient();

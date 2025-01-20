@@ -13,18 +13,23 @@ const PasswordField = (props: ControllerRenderProps<FieldValues, string>) => {
         type={showPassword ? "text" : "password"}
         className="border-beige-500"
       />
-      <Image
-        src={
-          showPassword
-            ? "/assets/images/icon-hide-password.svg"
-            : "/assets/images/icon-show-password.svg"
-        }
-        width={20}
-        height={20}
-        alt="Show/Hide Password Icon"
+      <button
         onClick={() => setShowPassword(!showPassword)}
-        className="absolute right-md h-[14px] w-auto cursor-pointer"
-      />
+        type="button"
+        className="absolute right-md"
+      >
+        <Image
+          src={
+            showPassword
+              ? "/assets/images/icon-hide-password.svg"
+              : "/assets/images/icon-show-password.svg"
+          }
+          width={20}
+          height={20}
+          alt="Show/Hide Password Icon"
+          className=" h-[14px] w-auto"
+        />
+      </button>
     </div>
   );
 };

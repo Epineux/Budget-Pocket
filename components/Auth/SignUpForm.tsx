@@ -1,11 +1,9 @@
 "use client";
-
 import { handleSignUp } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -14,8 +12,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { signUpSchema } from "@/schemas/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { toast, Toaster } from "sonner";
 import { z } from "zod";
 import PasswordField from "./PasswordField";
 
@@ -24,6 +23,8 @@ export function SignUpForm() {
     handleSignUp,
     undefined,
   );
+
+  // No changes to useForm
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -32,6 +33,16 @@ export function SignUpForm() {
       password: "",
     },
   });
+
+  useEffect(() => {
+    if (state?.success) {
+      console.log("Sign up successful:", state);
+      toast.success(
+        "Successfully signed up! Please check your email for confirmation.",
+      );
+      form.reset();
+    }
+  }, [state, form]);
 
   return (
     <Form {...form}>
@@ -45,14 +56,11 @@ export function SignUpForm() {
                 Name
               </FormLabel>
               <FormControl>
-                <Input {...field} type="name" className="border-beige-500" />
+                <Input {...field} type="text" className="border-beige-500" />
               </FormControl>
               {state?.errors?.name && (
                 <p className="text-red-500">{state.errors.name}</p>
               )}
-              <FormDescription className="hidden">
-                Enter your name
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -71,9 +79,6 @@ export function SignUpForm() {
               {state?.errors?.email && (
                 <p className="text-red-500">{state.errors.email}</p>
               )}
-              <FormDescription className="hidden">
-                Enter your email address
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -92,9 +97,6 @@ export function SignUpForm() {
               {state?.errors?.password && (
                 <p className="text-red-500">{state.errors.password}</p>
               )}
-              <FormDescription className="hidden">
-                Enter your password
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -108,6 +110,7 @@ export function SignUpForm() {
           Sign Up
         </Button>
       </form>
+      <Toaster richColors position="top-right" />
     </Form>
   );
 }

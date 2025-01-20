@@ -9,9 +9,7 @@ export async function GET(request: NextRequest) {
   const type = searchParams.get("type") as EmailOtpType | null;
 
   if (!token_hash || !type) {
-    return redirect(
-      "/login?error=Invalid verification link. Please request a new one.",
-    );
+    return redirect("/login?code=invalid_link");
   }
 
   const supabase = await createClient();
@@ -24,17 +22,12 @@ export async function GET(request: NextRequest) {
 
     if (verifyError) {
       console.error("Verification error:", verifyError);
-
       if (verifyError.status === 403 && verifyError.code === "otp_expired") {
-        return redirect(
-          "/login?error=This verification link has expired. Please request a new one.",
-        );
+        return redirect("/login?code=link_expired");
       }
-
-      return redirect(
-        `/login?error=${encodeURIComponent(verifyError.message)}`,
-      );
+      return redirect(`/login?code=verification_error`);
     }
+
     const {
       data: { session },
       error: sessionError,
@@ -42,35 +35,17 @@ export async function GET(request: NextRequest) {
 
     if (sessionError) {
       return new Response(null, {
-        status: 303, // Using 303 for "See Other"
-        headers: {
-          Location: "/login?error=Session error occurred",
-        },
-      });
-    }
-
-    // If we have a session, redirect to home with success message
-    if (session) {
-      return new Response(null, {
         status: 303,
-        headers: {
-          Location:
-            "/?message=Email verified successfully! Welcome to Budget Pocket.",
-        },
+        headers: { Location: "/login?code=session_error" },
       });
     }
 
-    // If no session, redirect to login with success message
     return new Response(null, {
       status: 303,
-      headers: {
-        Location: "/login?message=Email verified successfully! Please log in.",
-      },
+      headers: { Location: "/login?code=email_verified" },
     });
   } catch (error) {
     console.error("Unexpected error:", error);
-    return redirect(
-      "/login?error=An unexpected error occurred. Please try again.",
-    );
+    return redirect("/login?code=unexpected_error");
   }
 }

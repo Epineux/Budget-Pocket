@@ -1,4 +1,7 @@
+"use client";
+
 import { SignUpForm } from "@/components/Auth/SignUpForm";
+
 import Link from "next/link";
 
 const page = () => {
@@ -7,7 +10,7 @@ const page = () => {
       <h1 className="h1 text-grey-900">Sign Up</h1>
       <SignUpForm />
       <p className="text-standard mt-2xl text-center text-grey-500">
-        Need to create an account ?{" "}
+        Already have an account?{" "}
         <Link
           className="text-standard-bold ml-xs text-grey-900 underline hover:opacity-80"
           href={"/login"}

@@ -1,7 +1,6 @@
-import ToastHandler from "@/components/ToastHandler";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Providers } from "./context/providers";
+
 import "./globals.css";
 
 // Local Fonts
@@ -21,12 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${publicSans.className}  antialiased`}>
-        <Providers>
-          {children}
-          <ToastHandler />
-        </Providers>
-      </body>
+      <body className={`${publicSans.className}  antialiased`}>{children}</body>
     </html>
   );
 }

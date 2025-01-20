@@ -5,21 +5,24 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { AUTH_MESSAGES } from "@/constants/messages";
 import { loginSchema } from "@/schemas/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useActionState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useActionState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { toast, Toaster } from "sonner";
 import { z } from "zod";
 import PasswordField from "./PasswordField";
 
 export function LoginForm() {
+  const searchParams = useSearchParams();
   const [state, loginAction, isPending] = useActionState(
     handleLogin,
     undefined,
@@ -31,6 +34,21 @@ export function LoginForm() {
       password: "",
     },
   });
+
+  useEffect(() => {
+    const code = searchParams.get("code");
+    if (code) {
+      const message =
+        AUTH_MESSAGES[code.toUpperCase() as keyof typeof AUTH_MESSAGES];
+      if (message) {
+        if (code.toUpperCase() === "EMAIL_VERIFIED") {
+          toast.success(message);
+        } else {
+          toast.error(message);
+        }
+      }
+    }
+  }, [searchParams]);
 
   return (
     <Form {...form}>
@@ -49,9 +67,7 @@ export function LoginForm() {
               {state?.errors?.email && (
                 <p className="text-red-500">{state.errors.email}</p>
               )}
-              <FormDescription className="hidden">
-                Enter your email address
-              </FormDescription>
+
               <FormMessage />
             </FormItem>
           )}
@@ -70,9 +86,7 @@ export function LoginForm() {
               {state?.errors?.password && (
                 <p className="text-red-500">{state.errors.password}</p>
               )}
-              <FormDescription className="hidden">
-                Enter your password
-              </FormDescription>
+
               <FormMessage />
             </FormItem>
           )}
@@ -86,6 +100,7 @@ export function LoginForm() {
           Login
         </Button>
       </form>
+      <Toaster richColors position="top-right" />
     </Form>
   );
 }
