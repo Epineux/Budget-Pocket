@@ -1,6 +1,15 @@
 "use client";
 
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Transaction } from "@/schemas/transactionsSchemas";
+import {
   ColumnDef,
   ColumnFiltersState,
   SortingState,
@@ -16,24 +25,12 @@ import React from "react";
 import TableFilters from "./TableFilters";
 import TablePaginationControls from "./TablePaginationControls";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-
-interface TransactionsTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: Array<TData & { category: string }>;
+interface TransactionsTableProps {
+  columns: ColumnDef<Transaction, unknown>[];
+  data: Transaction[];
 }
 
-const TransactionsTable = <TData, TValue>({
-  columns,
-  data,
-}: TransactionsTableProps<TData, TValue>) => {
+const TransactionsTable = ({ columns, data }: TransactionsTableProps) => {
   const searchParams = useSearchParams();
   const initialCategory = searchParams.get("category") || "all";
   const [sorting, setSorting] = React.useState<SortingState>([

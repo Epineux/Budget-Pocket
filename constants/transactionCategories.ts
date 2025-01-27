@@ -1,8 +1,13 @@
 export const TRANSACTION_CATEGORIES = [
-  "Grocery",
+  "General",
   "Shopping",
+  "Dining Out",
+  "Groceries",
+  "Transportation",
   "Entertainment",
+  "Lifestyle",
   "Bills",
   "Travel",
-  "Dining",
-];
+  "Education",
+  "Health",
+] as const;

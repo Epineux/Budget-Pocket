@@ -637,6 +637,7 @@
     }
   ],
   "categories": [
+    "General",
     "Shopping",
     "Dining Out",
     "Groceries",
@@ -644,8 +645,9 @@
     "Entertainment",
     "Lifestyle",
     "Bills",
-    "Personal Care",
-    "Education"
+    "Travel",
+    "Education",
+    "Health"
   ],
   "themes": [
     {

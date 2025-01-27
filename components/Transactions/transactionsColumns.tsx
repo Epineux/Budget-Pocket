@@ -1,9 +1,9 @@
 "use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Transaction } from "@/schemas/transactionsSchemas";
 import { formatDateToReadable } from "@/utils/formatDateToReadable";
 import { ColumnDef } from "@tanstack/react-table";
 import clsx from "clsx";
-import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -15,27 +15,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
 
-export const transactionSchema = z.object({
-  avatar: z.string().url(),
-  name: z.string().min(1),
-  category: z.string(),
-  date: z.string().datetime(),
-  amount: z.number(),
-  recurring: z.boolean(),
-});
-export type Transaction = z.infer<typeof transactionSchema>;
-
 export const columns: ColumnDef<Transaction>[] = [
   {
     accessorKey: "name",
+    accessorFn: (row) => row.contacts.name,
     header: () => (
       <div className="text-small text-nowrap text-grey-500">
         Recipient / Sender
       </div>
     ),
     cell: ({ row }) => {
-      const name = row.getValue("name") as string;
-      const avatar = row.original.avatar;
+      const contactName = row.original.contacts.name;
+      const avatar = row.original.contacts.avatar as string;
       const category = row.getValue("category") as string;
       return (
         <div>
@@ -45,7 +36,7 @@ export const columns: ColumnDef<Transaction>[] = [
               <AvatarImage src={avatar} alt="Avatar" />
               <AvatarFallback>?</AvatarFallback>
             </Avatar>
-            <p className="text-standard-bold text-grey-900">{name}</p>
+            <p className="text-standard-bold text-grey-900">{contactName}</p>
           </div>
           {/* Mobile */}
           <div className="flex items-center gap-md @[640px]:hidden">
@@ -54,7 +45,7 @@ export const columns: ColumnDef<Transaction>[] = [
               <AvatarFallback>?</AvatarFallback>
             </Avatar>
             <div className="flex flex-col gap-2xs">
-              <p className="text-standard-bold text-grey-900">{name}</p>
+              <p className="text-standard-bold text-grey-900">{contactName}</p>
               <p className="text-small text-grey-500">{category}</p>
             </div>
           </div>
