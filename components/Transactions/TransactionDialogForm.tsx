@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import {
   Form,
   FormControl,
@@ -11,14 +10,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { TRANSACTION_CATEGORIES } from "@/constants/transactionCategories";
-import {
-  Contact,
-  transactionCategorySchema,
-} from "@/schemas/transactionsSchemas";
-import { createClient } from "@/utils/supabase/client";
+import { useFetchContacts } from "@/hooks/useFetchContacts";
+import { useSubmitTransaction } from "@/hooks/useSubmitTransaction";
+import { transactionFormSchema } from "@/schemas/formsSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { DatePicker } from "../DatePicker";
@@ -35,24 +31,17 @@ import {
 
 type TransactionDialogFormProps = {
   isOpen: boolean;
-  onSubmitted?: () => void; // Nouvelle prop
+  onSubmitted?: () => void;
 };
 
-const formSchema = z.object({
-  contact: z.string(),
-  amount: z.number(),
-  date: z.date(),
-  category: transactionCategorySchema,
-});
+const formSchema = transactionFormSchema;
 
 export function TransactionDialogForm({
-  isOpen,
   onSubmitted,
 }: TransactionDialogFormProps) {
-  const router = useRouter();
+  const { contacts, isLoading, refreshContacts } = useFetchContacts();
+  const { createTransaction, isSubmitting } = useSubmitTransaction();
   const categories = TRANSACTION_CATEGORIES;
-  const [contacts, setContacts] = useState<Contact[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -63,70 +52,11 @@ export function TransactionDialogForm({
     },
   });
 
-  const fetchContacts = async () => {
-    setIsLoading(true);
-    const supabase = createClient();
-    try {
-      const { data, error } = await supabase
-        .from("contacts")
-        .select("*")
-        .order("name", { ascending: true });
-      if (error) throw error;
-      setContacts(data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (isOpen) {
-      fetchContacts();
-    }
-  }, [isOpen]);
-
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    // Insert transaction
-    const supabase = createClient();
-
-    try {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      const userId = user?.id;
-
-      if (!userId) {
-        alert("User not authenticated");
-        return;
-      }
-      const selectedContact = contacts.find(
-        (contact) => contact.id === values.contact,
-      );
-      if (!selectedContact) {
-        alert("Contact introuvable");
-        return;
-      }
-
-      const { error } = await supabase.from("transactions").insert([
-        {
-          amount: values.amount,
-          date: values.date.toISOString(),
-          category: values.category,
-          contact_id: selectedContact.id,
-          user_id: userId,
-        },
-      ]);
-
-      if (error) throw error;
-      // Reset form, close dialog, refresh page
+    const success = await createTransaction(values);
+    if (success) {
       form.reset();
       onSubmitted?.();
-      router.refresh();
-      console.log("Transaction created successfully!");
-    } catch (error) {
-      console.error("Unexpected error:", error);
-      alert("An unexpected error occurred");
     }
   };
 
@@ -179,7 +109,7 @@ export function TransactionDialogForm({
               </FormItem>
             )}
           />
-          <NewContactDialog onContactCreated={fetchContacts} />
+          <NewContactDialog onContactCreated={refreshContacts} />
         </div>
         <FormField
           control={form.control}
@@ -265,7 +195,7 @@ export function TransactionDialogForm({
         <Button
           className="!mt-2xl h-12 w-full"
           type="submit"
-          disabled={isLoading}
+          disabled={isLoading || isSubmitting}
         >
           Add Transaction
         </Button>

@@ -40,7 +40,7 @@ type NewContactDialogProps = {
 
 const formSchema = z.object({
   name: z.string().min(1).max(25),
-  avatar: z.string(),
+  avatar: z.string().min(1),
 });
 
 const contactAvatars = contactAvatarsUrl;
@@ -123,7 +123,9 @@ const NewContactDialog = ({ onContactCreated }: NewContactDialogProps) => {
             onSubmit={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              handleSubmit(form.getValues(), { setOpen });
+              form.handleSubmit((values) => handleSubmit(values, { setOpen }))(
+                e,
+              );
             }}
             className="space-y-8"
           >

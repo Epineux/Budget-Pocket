@@ -7,7 +7,7 @@ import { Suspense } from "react";
 import { z } from "zod";
 
 const page = async () => {
-  // fetch transactions
+  // fetch transactions server side
   const supabase = await createClient();
   const { data: rawTransactions, error } = await supabase.from("transactions")
     .select(`
