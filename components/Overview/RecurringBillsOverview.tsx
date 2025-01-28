@@ -19,6 +19,7 @@ const RecurringBillsOverview = () => {
             alt="Caret Right"
             width={5}
             height={8}
+            className="w-auto"
           />
         </Link>
       </div>

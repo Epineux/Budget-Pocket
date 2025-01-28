@@ -17,10 +17,13 @@ const NewTransactionDialog = () => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
-          className="!text-standard-bold rounded-lg bg-grey-900  text-white"
-          size="topPageButton"
+          className="!text-standard-bold rounded-lg bg-grey-900 text-white @[450px]:px-md @[450px]:py-md"
+          size="noPaddingButton"
         >
-          + Add New Transaction
+          <span className="hidden @[450px]:inline">+ Add New Transaction</span>
+          <span className="h1 flex h-12 w-12 items-center justify-center @[450px]:hidden">
+            +
+          </span>
         </Button>
       </DialogTrigger>
       <DialogContent>

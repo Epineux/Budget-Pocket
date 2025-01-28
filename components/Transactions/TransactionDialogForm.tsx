@@ -82,6 +82,7 @@ export function TransactionDialogForm({
                           alt="Dropdown"
                           width={11}
                           height={6}
+                          className="w-auto"
                         />
                       </div>
                     </SelectTrigger>
@@ -129,10 +130,11 @@ export function TransactionDialogForm({
                         alt="Dropdown"
                         width={11}
                         height={6}
+                        className="w-auto"
                       />
                     </div>
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="max-h-64 overflow-y-auto">
                     {categories.map((category) => (
                       <SelectItem
                         key={category as string}

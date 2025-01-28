@@ -83,6 +83,7 @@ const BillsSort = <TData,>({ table }: BillsTableFiltersProps<TData>) => {
                   alt="Dropdown"
                   width={11}
                   height={6}
+                  className="w-auto"
                 />
               </div>
               <div className="@[510px]:hidden">
@@ -91,6 +92,7 @@ const BillsSort = <TData,>({ table }: BillsTableFiltersProps<TData>) => {
                   alt="Sort Icon"
                   width={15}
                   height={15}
+                  className="h-4 w-4"
                 />
               </div>
             </SelectTrigger>

@@ -27,6 +27,7 @@ const buttonVariants = cva(
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
         topPageButton: "px-md py-md",
+        noPaddingButton: "px-0 py-0",
         potCardButton: "px-md py-md",
         loginButton: "py-md",
       },

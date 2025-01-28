@@ -30,6 +30,7 @@ const TablePaginationControls = <TData,>({ table }: Props<TData>) => {
             alt="Previous"
             width={5}
             height={5}
+            className="w-auto"
           />
           <span className="text-standard text-grey-900">Prev</span>
         </Button>
@@ -76,6 +77,7 @@ const TablePaginationControls = <TData,>({ table }: Props<TData>) => {
             alt="Next"
             width={5}
             height={5}
+            className="w-auto"
           />
         </Button>
       </div>

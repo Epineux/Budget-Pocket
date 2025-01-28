@@ -8,6 +8,7 @@ const TotalBills = () => {
         width={40}
         height={40}
         alt="Recurring Bill Icon"
+        className="h-10 w-10"
       />
       <div className="flex flex-col gap-xs">
         <p>Total Bills</p>

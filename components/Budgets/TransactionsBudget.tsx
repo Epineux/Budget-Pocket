@@ -28,6 +28,7 @@ const TransactionsBudget = ({
             width={5}
             height={8}
             alt="See All Icon"
+            className="w-auto"
           />
         </Link>
       </div>

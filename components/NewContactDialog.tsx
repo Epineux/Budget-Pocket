@@ -170,6 +170,7 @@ const NewContactDialog = ({ onContactCreated }: NewContactDialogProps) => {
                               alt="Dropdown"
                               width={11}
                               height={6}
+                              className="w-auto"
                             />
                           </div>
                         </SelectTrigger>

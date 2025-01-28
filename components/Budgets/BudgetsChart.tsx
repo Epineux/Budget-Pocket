@@ -1,5 +1,4 @@
 "use client";
-import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { Cell, Label, Pie, PieChart, Tooltip, TooltipProps } from "recharts";
 
@@ -25,15 +24,21 @@ export default function DonutChart({
 }: {
   budgetsData: BudgetItem[];
 }) {
-  const pieData = budgetsData.map((budget) => ({
-    name: budget.name,
-    value: budget.maximum,
-  }));
+  const [isClient, setIsClient] = useState(false);
 
   const totalValue = budgetsData.reduce(
     (sum: number, entry: BudgetItem) => sum + entry.maximum,
     0,
   );
+
+  const pieData = budgetsData.map((budget) => ({
+    name: budget.name,
+    value: budget.maximum,
+  }));
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
     if (active && payload?.[0]) {
@@ -52,14 +57,7 @@ export default function DonutChart({
   };
 
   const CenterLabel = (props: Props) => {
-    const [isVisible, setIsVisible] = useState(false);
     const { cx = 0, cy = 0 } = props.viewBox || {};
-
-    useEffect(() => {
-      setTimeout(() => {
-        setIsVisible(true);
-      }, 1500);
-    }, []);
 
     return (
       <text
@@ -67,22 +65,29 @@ export default function DonutChart({
         y={cy}
         textAnchor="middle"
         dominantBaseline="middle"
-        className={clsx("opacity-0 transition-opacity duration-1000 ease-in", {
-          "opacity-100": isVisible,
-        })}
+        className="animate-fade-in opacity-0 delay-1000"
       >
         <tspan x={cx} dy="-0.5em" className="h2 font-bold" fill="#201f24">
           $338
         </tspan>
         <tspan x={cx} dy="1.8em" className="text-small" fill="#696868">
-          of ${totalValue} limit
+          of ${totalValue.toLocaleString()} limit
         </tspan>
       </text>
     );
   };
 
+  if (!isClient) {
+    return (
+      <div className="col-span-3 my-lg flex h-[240px] w-[240px] items-center justify-center"></div>
+    );
+  }
+
   return (
-    <div className="col-span-3 my-lg flex items-center justify-center">
+    <div
+      className="col-span-3 my-lg flex items-center justify-center"
+      suppressHydrationWarning
+    >
       <PieChart width={240} height={240}>
         <Pie
           data={pieData}
@@ -93,6 +98,10 @@ export default function DonutChart({
           fill="#8884d8"
           paddingAngle={2}
           dataKey="value"
+          isAnimationActive={isClient}
+          animationDuration={1500}
+          animationEasing="ease-in-out"
+          animationBegin={0}
         >
           {budgetsData.map((category) => (
             <Cell

@@ -114,6 +114,7 @@ export function PotDialogForm() {
                         alt="Dropdown"
                         width={11}
                         height={6}
+                        className="w-auto"
                       />
                     </div>
                   </SelectTrigger>

@@ -18,6 +18,7 @@ const PotsOverview = () => {
             alt="Caret Right"
             width={5}
             height={8}
+            className="w-auto"
           />
         </Link>
       </div>
@@ -29,6 +30,7 @@ const PotsOverview = () => {
               alt="Pots"
               width={26}
               height={35}
+              className="w-auto"
             />
           </div>
           <div className="flex flex-col gap-xs">

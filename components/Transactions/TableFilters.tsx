@@ -1,4 +1,5 @@
 "use client";
+import { TRANSACTION_CATEGORIES } from "@/constants/transactionCategories";
 import { Table as TanstackTable } from "@tanstack/react-table";
 import Image from "next/image";
 import { Input } from "../ui/input";
@@ -25,6 +26,7 @@ const TransactionTableFilters = <TData,>({
   categoryFilter,
   setCategoryFilter,
 }: TableFiltersProps<TData>) => {
+  const categories = TRANSACTION_CATEGORIES;
   const handleSortChange = (value: SortValue) => {
     switch (value) {
       case "latest":
@@ -75,6 +77,7 @@ const TransactionTableFilters = <TData,>({
           alt="Search"
           width={16}
           height={16}
+          className="w-auto"
         />
       </div>
       <div className="flex flex-shrink-0 items-center gap-xl">
@@ -91,6 +94,7 @@ const TransactionTableFilters = <TData,>({
                   alt="Dropdown"
                   width={11}
                   height={6}
+                  className="w-auto"
                 />
               </div>
               <div className="@[510px]:hidden">
@@ -99,6 +103,7 @@ const TransactionTableFilters = <TData,>({
                   alt="Sort Icon"
                   width={15}
                   height={15}
+                  className="h-4 w-4"
                 />
               </div>
             </SelectTrigger>
@@ -129,6 +134,7 @@ const TransactionTableFilters = <TData,>({
                   alt="Dropdown"
                   width={11}
                   height={6}
+                  className="w-auto"
                 />
               </div>
               <div className="@[510px]:hidden">
@@ -137,21 +143,17 @@ const TransactionTableFilters = <TData,>({
                   alt="Filter Icon"
                   width={16}
                   height={15}
+                  className="w-auto"
                 />
               </div>
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Transactions</SelectItem>
-              {Array.from(new Set(data.map((item) => item.category))).map(
-                (category) => (
-                  <SelectItem
-                    key={category as string}
-                    value={category as string}
-                  >
-                    {category as string}
-                  </SelectItem>
-                ),
-              )}
+              {categories.map((category) => (
+                <SelectItem key={category as string} value={category as string}>
+                  {category as string}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
