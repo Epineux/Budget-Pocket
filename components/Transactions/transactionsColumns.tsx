@@ -1,7 +1,7 @@
 "use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Transaction } from "@/schemas/transactionsSchemas";
-import { formatDateToReadable } from "@/utils/formatDateToReadable";
+import { formatDateToReadable } from "@/utils/dateUtils";
 import { ColumnDef } from "@tanstack/react-table";
 import clsx from "clsx";
 

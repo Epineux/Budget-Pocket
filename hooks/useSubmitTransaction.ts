@@ -2,6 +2,7 @@ import { transactionFormSchema } from "@/schemas/formsSchemas";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 import { z } from "zod";
 
 export const useSubmitTransaction = () => {
@@ -18,7 +19,10 @@ export const useSubmitTransaction = () => {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      if (!user?.id) throw new Error("User not authenticated");
+      if (!user?.id) {
+        toast.error("You must be logged in to create a transaction");
+        throw new Error("User not authenticated");
+      }
 
       const { error } = await supabase.from("transactions").insert([
         {
@@ -31,6 +35,8 @@ export const useSubmitTransaction = () => {
       ]);
 
       if (error) throw error;
+
+      toast.success("Transaction created successfully");
       router.refresh();
       return true;
     } catch (error) {

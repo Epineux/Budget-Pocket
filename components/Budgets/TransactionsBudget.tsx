@@ -1,26 +1,23 @@
+import { Transaction } from "@/schemas/transactionsSchemas";
 import Image from "next/image";
 import Link from "next/link";
-import data from "../../constants/data.json";
 import TransactionItem from "./TransactionsBudgetItem";
 
-type TransactionsBudgetProps = {
-  transactionsCategory: string;
-};
-
 const TransactionsBudget = ({
-  transactionsCategory,
-}: TransactionsBudgetProps) => {
-  const transactionsInfos = data.transactions;
-  const filteredTransactions = transactionsInfos
-    .filter((transaction) => transaction.category === transactionsCategory)
-    .slice(0, 3);
+  transactions,
+  budgetCategory,
+}: {
+  transactions: Transaction[];
+  budgetCategory: string;
+}) => {
+  const lastTransactions = transactions.slice(0, 3);
   return (
     <div className="rounded-xl bg-beige-100 p-md sm-490:p-lg">
       <div className="flex items-center justify-between">
         <h3 className="h3 text-grey-900">Latest Spending</h3>
         <Link
           className="text-standard flex items-center gap-sm text-grey-500 hover:brightness-50"
-          href={`/transactions?category=${transactionsCategory}`}
+          href={`/transactions?category=${budgetCategory}`}
         >
           <span>See All</span>
           <Image
@@ -33,13 +30,18 @@ const TransactionsBudget = ({
         </Link>
       </div>
       <ul className="mt-lg">
-        {filteredTransactions.map((transaction, index) => (
+        {lastTransactions.map((transaction, index) => (
           <TransactionItem
             key={index}
             transaction={transaction}
-            isLast={index === filteredTransactions.length - 1}
+            isLast={index === lastTransactions.length - 1}
           />
         ))}
+        {transactions.length === 0 && (
+          <li className="mt-xl flex items-center ">
+            <p className="text-standard text-grey-500">No spending yet</p>
+          </li>
+        )}
       </ul>
     </div>
   );

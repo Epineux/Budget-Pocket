@@ -19,12 +19,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { contactAvatarsUrl } from "@/constants/contactAvatarsUrl";
+import { CONTACT_AVATARS_URL } from "@/constants/contactAvatarsUrl";
+import { contactFormSchema } from "@/schemas/formsSchemas";
 import { createClient } from "@/utils/supabase/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { Button } from "./ui/button";
 import {
   Select,
@@ -38,12 +40,8 @@ type NewContactDialogProps = {
   onContactCreated?: () => void;
 };
 
-const formSchema = z.object({
-  name: z.string().min(1).max(25),
-  avatar: z.string().min(1),
-});
-
-const contactAvatars = contactAvatarsUrl;
+const formSchema = contactFormSchema;
+const contactAvatars = CONTACT_AVATARS_URL;
 
 const NewContactDialog = ({ onContactCreated }: NewContactDialogProps) => {
   const [open, setOpen] = useState(false);
@@ -67,7 +65,7 @@ const NewContactDialog = ({ onContactCreated }: NewContactDialogProps) => {
       const userId = user?.id;
 
       if (!userId) {
-        alert("User not authenticated");
+        toast.error("User not authenticated");
         return;
       }
 
@@ -82,7 +80,7 @@ const NewContactDialog = ({ onContactCreated }: NewContactDialogProps) => {
       if (error) {
         if (error.code === "23505") {
           console.error("Error: A contact with this name already exists.");
-          alert(
+          toast.error(
             "A contact with this name already exists. Please choose a different name.",
           );
         } else {
@@ -90,6 +88,7 @@ const NewContactDialog = ({ onContactCreated }: NewContactDialogProps) => {
         }
         return false;
       } else {
+        toast.success("Contact created successfully!");
         form.reset();
         setOpen(false);
         onContactCreated?.();

@@ -5,6 +5,7 @@ const HeaderAuth = () => {
     <header className="flex items-center justify-center rounded-b-lg bg-grey-900 py-xl lg:hidden">
       <Image
         src="/assets/images/logo-large.svg"
+        priority
         alt="Logo"
         width={121}
         height={22}

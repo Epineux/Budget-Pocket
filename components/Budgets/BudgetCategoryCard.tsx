@@ -1,3 +1,6 @@
+import { Budget } from "@/schemas/budgetsSchema";
+import { Transaction } from "@/schemas/transactionsSchemas";
+import { formatDateToMonthYear } from "@/utils/dateUtils";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import {
@@ -7,31 +10,44 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { Progress } from "../ui/progress";
+import BudgetProgress from "./BudgetProgress";
 import TransactionsBudget from "./TransactionsBudget";
 
-type BudgetCategoryCardProps = {
-  category: {
-    name: string;
-    theme: string;
-    spent: number;
-    maximum: number;
-  };
-};
-
-const BudgetCategoryCard = ({ category }: BudgetCategoryCardProps) => {
-  const valueRemaining = category.maximum - category.spent;
+const BudgetCategoryCard = ({
+  budget,
+  transactions,
+}: {
+  budget: Budget;
+  transactions: Transaction[];
+}) => {
+  const budgetDateObj = new Date(budget.created_at);
+  const [budgetMonth, budgetYear] = [
+    budgetDateObj.getMonth(),
+    budgetDateObj.getFullYear(),
+  ];
+  // Filter transactions for expenses (amount < 0) within the same month as the budget
+  const filteredTransactions = transactions
+    .filter(
+      (transaction) =>
+        transaction.amount < 0 &&
+        new Date(transaction.date).getMonth() === budgetMonth &&
+        new Date(transaction.date).getFullYear() === budgetYear,
+    )
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   return (
     <div className="flex flex-col gap-lg rounded-xl bg-white px-lg py-xl @container sm-490:p-2xl">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-md">
           <div
             style={{
-              backgroundColor: category.theme,
+              backgroundColor: budget.theme,
             }}
             className="h-4 w-4 rounded-full"
           ></div>
-          <h2 className="h2 text-grey-900">{category.name}</h2>
+          <h2 className="h2 text-grey-900">{budget.category}</h2>
+          <span className="text-small-bold text-grey-500">
+            {formatDateToMonthYear(budget.created_at)}
+          </span>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild style={{ boxShadow: "none" }}>
@@ -43,7 +59,7 @@ const BudgetCategoryCard = ({ category }: BudgetCategoryCardProps) => {
                 src="/assets/images/icon-ellipsis.svg"
                 width={14}
                 height={4}
-                alt="Edit Icon"
+                alt="Menu Icon"
               />
             </Button>
           </DropdownMenuTrigger>
@@ -56,57 +72,11 @@ const BudgetCategoryCard = ({ category }: BudgetCategoryCardProps) => {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="flex flex-col gap-md">
-        <p className="text-standard text-grey-500">
-          Maximum of ${category.maximum}
-        </p>
-        <div className="h-8 rounded bg-beige-100 p-2xs">
-          <Progress
-            value={
-              category.spent >= category.maximum
-                ? 100
-                : (category.spent / category.maximum) * 100
-            }
-            className="h-full rounded"
-            style={
-              {
-                "--progress-indicator-color": category.theme,
-              } as React.CSSProperties
-            }
-          />
-        </div>
-        <div className="grid grid-cols-2">
-          <div className="flex gap-md">
-            <div
-              style={{
-                backgroundColor: category.theme,
-              }}
-              className="h-full w-1 rounded-full"
-            ></div>
-            <div className="flex flex-col gap-2xs">
-              <span className="text-small text-grey-500">Spent</span>
-              <span className="text-standard-bold text-grey-900">
-                ${category.spent}
-              </span>
-            </div>
-          </div>
-          <div className="flex gap-md">
-            <div
-              style={{
-                backgroundColor: "#F8F4F0",
-              }}
-              className="h-full w-1 rounded-full"
-            ></div>
-            <div className="flex flex-col gap-2xs">
-              <span className="text-small text-grey-500">Remaining</span>
-              <span className="text-standard-bold text-grey-900">
-                ${valueRemaining > 0 ? valueRemaining : 0}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <TransactionsBudget transactionsCategory={category.name} />
+      <BudgetProgress budget={budget} transactions={filteredTransactions} />
+      <TransactionsBudget
+        transactions={filteredTransactions}
+        budgetCategory={budget.category}
+      />
     </div>
   );
 };

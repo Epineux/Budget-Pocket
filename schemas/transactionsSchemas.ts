@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const transactionCategorySchema = z.enum(TRANSACTION_CATEGORIES);
 
-export const contactSchema = z.object({
+export const contactsSchema = z.object({
   id: z.string(),
   name: z.string(),
   avatar: z.string(),
@@ -15,8 +15,8 @@ export const transactionSchema = z.object({
   category: transactionCategorySchema,
   date: z.string().date(),
   contact_id: z.string(),
-  contacts: contactSchema,
+  contacts: contactsSchema,
 });
 
-export type Contact = z.infer<typeof contactSchema>;
+export type Contact = z.infer<typeof contactsSchema>;
 export type Transaction = z.infer<typeof transactionSchema>;

@@ -1,4 +1,4 @@
-export const contactAvatarsUrl = [
+export const CONTACT_AVATARS_URL = [
   "/assets/images/avatars/aqua-flow-utilities.jpg",
   "/assets/images/avatars/buzz-marketing-group.jpg",
   "/assets/images/avatars/bytewise.jpg",

@@ -56,6 +56,7 @@ const CollapsibleSidebar = () => {
                 ? "/assets/images/logo-small.svg"
                 : "/assets/images/logo-large.svg"
             }
+            priority
             alt="Budget-Pocket Logo"
             width={isMinimized ? 22 : 121}
             height={22}

@@ -9,10 +9,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { THEMES } from "@/constants/themes";
+import { TRANSACTION_CATEGORIES } from "@/constants/transactionCategories";
+import { useSubmitBudget } from "@/hooks/useSubmitBudget";
+import { budgetFormSchema } from "@/schemas/formsSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import data from "../../constants/data.json";
+import { z } from "zod";
+import { Input } from "../ui/input";
 import {
   Select,
   SelectContent,
@@ -21,16 +26,16 @@ import {
   SelectValue,
 } from "../ui/select";
 
-import { z } from "zod";
-import { Input } from "../ui/input";
+type TransactionDialogFormProps = {
+  onSubmitted?: () => void;
+};
 
-const formSchema = z.object({
-  category: z.string().nonempty("Please select a category"),
-  maximumSpend: z.number().positive().int(),
-  theme: z.string().nonempty("Please select a theme"),
-});
+const formSchema = budgetFormSchema;
 
-export function BudgetDialogForm() {
+export function BudgetDialogForm({ onSubmitted }: TransactionDialogFormProps) {
+  const categories = TRANSACTION_CATEGORIES;
+  const themes = THEMES;
+  const { createBudget, isSubmitting } = useSubmitBudget();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -39,11 +44,18 @@ export function BudgetDialogForm() {
       theme: "",
     },
   });
-  const categories = data.categories;
-  const themes = data.themes;
+
+  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+    const success = await createBudget(values);
+    if (success) {
+      form.reset();
+      onSubmitted?.();
+    }
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-3">
         <FormField
           control={form.control}
           name="category"
@@ -66,7 +78,7 @@ export function BudgetDialogForm() {
                       />
                     </div>
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="max-h-72 overflow-y-auto">
                     {categories.map((category) => (
                       <SelectItem
                         key={category as string}
@@ -157,14 +169,14 @@ export function BudgetDialogForm() {
             </FormItem>
           )}
         />
-        <Button className="!mt-2xl h-12 w-full" type="submit">
+        <Button
+          className="!mt-2xl h-12 w-full"
+          type="submit"
+          disabled={isSubmitting}
+        >
           Add Budget
         </Button>
       </form>
     </Form>
   );
-}
-
-function onSubmit(values: z.infer<typeof formSchema>) {
-  console.log(values);
 }

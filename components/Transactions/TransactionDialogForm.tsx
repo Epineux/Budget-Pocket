@@ -49,11 +49,19 @@ export function TransactionDialogForm({
       amount: undefined,
       date: new Date(),
       category: "General",
+      type: "expense",
     },
   });
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    const success = await createTransaction(values);
+    const amount =
+      values.type === "expense"
+        ? -Math.abs(values.amount!)
+        : Math.abs(values.amount!);
+    const success = await createTransaction({
+      ...values,
+      amount,
+    });
     if (success) {
       form.reset();
       onSubmitted?.();
@@ -168,11 +176,24 @@ export function TransactionDialogForm({
                     type="number"
                     placeholder="e.g. 500"
                     className="text-standard h-12 border border-beige-500 pl-7 focus-visible:ring-1 focus-visible:ring-grey-900 focus-visible:ring-offset-1"
-                    min={-1000000}
+                    min={0.01}
+                    step={0.01}
                     max={1000000}
-                    onChange={(e) =>
-                      field.onChange(e.target.valueAsNumber || undefined)
-                    }
+                    onKeyDown={(e) => {
+                      if (
+                        !/[0-9]|\.|Backspace|Delete|Tab|ArrowLeft|ArrowRight|ArrowUp|ArrowDown/.test(
+                          e.key,
+                        )
+                      ) {
+                        e.preventDefault();
+                      }
+                    }}
+                    onChange={(e) => {
+                      const value = parseFloat(e.target.value);
+                      field.onChange(
+                        isNaN(value) ? undefined : Math.abs(value),
+                      );
+                    }}
                     value={field.value || ""}
                   />
                 </div>
@@ -194,13 +215,41 @@ export function TransactionDialogForm({
             </FormItem>
           )}
         />
-        <Button
-          className="!mt-2xl h-12 w-full"
-          type="submit"
-          disabled={isLoading || isSubmitting}
-        >
-          Add Transaction
-        </Button>
+        <FormField
+          control={form.control}
+          name="type"
+          render={({ field }) => (
+            <FormItem className="hidden">
+              <FormControl>
+                <Input type="hidden" {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <div className="!mt-2xl flex gap-sm">
+          <Button
+            className="h-12 flex-1 bg-secondary-green hover:bg-secondary-green/90"
+            type="button"
+            onClick={() => {
+              form.setValue("type", "income");
+              form.handleSubmit(handleSubmit)();
+            }}
+            disabled={isLoading || isSubmitting}
+          >
+            Add Income
+          </Button>
+          <Button
+            className="h-12 flex-1 bg-secondary-red hover:bg-secondary-red/90"
+            type="button"
+            onClick={() => {
+              form.setValue("type", "expense");
+              form.handleSubmit(handleSubmit)();
+            }}
+            disabled={isLoading || isSubmitting}
+          >
+            Add Expense
+          </Button>
+        </div>
       </form>
     </Form>
   );
