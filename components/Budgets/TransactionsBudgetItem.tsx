@@ -3,7 +3,7 @@ import { Transaction } from "@/schemas/transactionsSchemas";
 import { formatDateToReadable } from "@/utils/dateUtils";
 import clsx from "clsx";
 
-const TransactionsItemOverviewItem = ({
+const TransactionBudgetItem = ({
   transaction,
   isLast,
 }: {
@@ -50,4 +50,4 @@ const TransactionsItemOverviewItem = ({
   );
 };
 
-export default TransactionsItemOverviewItem;
+export default TransactionBudgetItem;

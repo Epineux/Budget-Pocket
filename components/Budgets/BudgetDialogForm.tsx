@@ -54,7 +54,7 @@ export function BudgetDialogForm({ onSubmitted }: TransactionDialogFormProps) {
   };
 
   return (
-    <Form {...form}>
+    <Form {...form} aria-label="Budget Form">
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-3">
         <FormField
           control={form.control}

@@ -16,7 +16,10 @@ const page = async () => {
         </div>
         <div className="mt-2xl flex flex-col gap-xl @[800px]:flex-row">
           <section className="flex-[2]">
-            <BudgetChartCard />
+            <BudgetChartCard
+              budgetsData={budgetsData}
+              transactionsData={transactionsData}
+            />
           </section>
           <section className="flex-[3]">
             <ul className="flex flex-col gap-xl">

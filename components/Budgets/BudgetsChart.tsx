@@ -1,12 +1,9 @@
 "use client";
+import { Budget } from "@/schemas/budgetsSchema";
+import { Transaction } from "@/schemas/transactionsSchemas";
+import { getTotalSpent } from "@/utils/getTotalSpent";
 import { useEffect, useState } from "react";
 import { Cell, Label, Pie, PieChart, Tooltip, TooltipProps } from "recharts";
-
-type BudgetItem = {
-  name: string;
-  maximum: number;
-  theme: string;
-};
 
 type Props = {
   viewBox?: {
@@ -21,18 +18,32 @@ type Props = {
 
 export default function DonutChart({
   budgetsData,
+  transactionsData,
 }: {
-  budgetsData: BudgetItem[];
+  budgetsData: Budget[];
+  transactionsData: Transaction[];
 }) {
+  const budgetCategories = new Set(budgetsData.map((b) => b.category));
+
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth();
+  const currentYear = currentDate.getFullYear();
+  const totalSpent = getTotalSpent({
+    transactionsData,
+    budgetCategories,
+    currentMonth,
+    currentYear,
+  });
+
   const [isClient, setIsClient] = useState(false);
 
   const totalValue = budgetsData.reduce(
-    (sum: number, entry: BudgetItem) => sum + entry.maximum,
+    (sum: number, entry: Budget) => sum + entry.maximum,
     0,
   );
 
   const pieData = budgetsData.map((budget) => ({
-    name: budget.name,
+    name: budget.category,
     value: budget.maximum,
   }));
 
@@ -67,8 +78,13 @@ export default function DonutChart({
         dominantBaseline="middle"
         className="animate-fade-in opacity-0 delay-1000"
       >
-        <tspan x={cx} dy="-0.5em" className="h2 font-bold" fill="#201f24">
-          $338
+        <tspan
+          x={cx}
+          dy="-0.5em"
+          className="h2 font-bold"
+          fill={totalSpent > totalValue ? "#C94736" : "#201f24"}
+        >
+          ${totalSpent.toLocaleString()}
         </tspan>
         <tspan x={cx} dy="1.8em" className="text-small" fill="#696868">
           of ${totalValue.toLocaleString()} limit
@@ -79,16 +95,25 @@ export default function DonutChart({
 
   if (!isClient) {
     return (
-      <div className="col-span-3 my-lg flex h-[240px] w-[240px] items-center justify-center"></div>
+      <div className="my-lg flex h-[240px] w-[240px] items-center justify-center"></div>
+    );
+  }
+
+  if (!budgetsData.length) {
+    return (
+      <div className="text-small-bold mx-auto my-lg flex h-[240px] w-[240px] items-center justify-center rounded-full shadow-lg">
+        <p>No current budgets, add some!</p>
+      </div>
     );
   }
 
   return (
-    <div
-      className="col-span-3 my-lg flex items-center justify-center"
-      suppressHydrationWarning
-    >
-      <PieChart width={240} height={240}>
+    <div className="my-lg flex items-center justify-center">
+      <PieChart
+        width={240}
+        height={240}
+        aria-label="Donut chart showing budget distribution"
+      >
         <Pie
           data={pieData}
           cx="50%"
@@ -103,10 +128,10 @@ export default function DonutChart({
           animationEasing="ease-in-out"
           animationBegin={0}
         >
-          {budgetsData.map((category) => (
+          {budgetsData.map((budget) => (
             <Cell
-              key={`cell-${category.name}`}
-              fill={category.theme}
+              key={`cell-${budget.category}`}
+              fill={budget.theme}
               className="border-0 hover:brightness-110"
             />
           ))}

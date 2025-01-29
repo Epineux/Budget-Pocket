@@ -1,6 +1,7 @@
 import { Budget } from "@/schemas/budgetsSchema";
 import { Transaction } from "@/schemas/transactionsSchemas";
 import { formatDateToMonthYear } from "@/utils/dateUtils";
+import { filterTransactions } from "@/utils/filterTransactions";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import {
@@ -26,14 +27,11 @@ const BudgetCategoryCard = ({
     budgetDateObj.getFullYear(),
   ];
   // Filter transactions for expenses (amount < 0) within the same month as the budget
-  const filteredTransactions = transactions
-    .filter(
-      (transaction) =>
-        transaction.amount < 0 &&
-        new Date(transaction.date).getMonth() === budgetMonth &&
-        new Date(transaction.date).getFullYear() === budgetYear,
-    )
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const filteredTransactions = filterTransactions(
+    transactions,
+    budgetMonth,
+    budgetYear,
+  );
   return (
     <div className="flex flex-col gap-lg rounded-xl bg-white px-lg py-xl @container sm-490:p-2xl">
       <div className="flex items-center justify-between">
@@ -50,7 +48,11 @@ const BudgetCategoryCard = ({
           </span>
         </div>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild style={{ boxShadow: "none" }}>
+          <DropdownMenuTrigger
+            asChild
+            style={{ boxShadow: "none" }}
+            aria-label="Budget options menu"
+          >
             <Button
               variant="ghost"
               className="h-4 w-8 p-0 focus:border focus:border-grey-900"
