@@ -8,7 +8,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -24,7 +23,6 @@ import { contactFormSchema } from "@/schemas/formsSchemas";
 import { createClient } from "@/utils/supabase/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
@@ -38,13 +36,18 @@ import {
 
 type NewContactDialogProps = {
   onContactCreated?: () => void;
+  open?: boolean; // highlight-line
+  onOpenChange?: (open: boolean) => void; // highlight-line
 };
 
 const formSchema = contactFormSchema;
 const contactAvatars = CONTACT_AVATARS_URL;
 
-const NewContactDialog = ({ onContactCreated }: NewContactDialogProps) => {
-  const [open, setOpen] = useState(false);
+const NewContactDialog = ({
+  onContactCreated,
+  open,
+  onOpenChange,
+}: NewContactDialogProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -55,7 +58,7 @@ const NewContactDialog = ({ onContactCreated }: NewContactDialogProps) => {
 
   const handleSubmit = async (
     values: z.infer<typeof formSchema>,
-    { setOpen }: { setOpen: (open: boolean) => void },
+    { onOpenChange }: { onOpenChange?: (open: boolean) => void },
   ) => {
     const supabase = createClient();
     try {
@@ -90,7 +93,7 @@ const NewContactDialog = ({ onContactCreated }: NewContactDialogProps) => {
       } else {
         toast.success("Contact created successfully!");
         form.reset();
-        setOpen(false);
+        onOpenChange?.(false);
         onContactCreated?.();
         return true;
       }
@@ -101,13 +104,8 @@ const NewContactDialog = ({ onContactCreated }: NewContactDialogProps) => {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button className="text-standard ml-auto mt-auto h-12 rounded-lg bg-grey-900 text-white">
-          + Add New Contact
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent onClick={(e) => e.stopPropagation()}>
         <DialogHeader>
           <DialogTitle className="h1 text-grey-900">
             Add New Contact
@@ -122,9 +120,9 @@ const NewContactDialog = ({ onContactCreated }: NewContactDialogProps) => {
             onSubmit={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              form.handleSubmit((values) => handleSubmit(values, { setOpen }))(
-                e,
-              );
+              form.handleSubmit((values) =>
+                handleSubmit(values, { onOpenChange }),
+              )(e);
             }}
             className="space-y-8"
           >

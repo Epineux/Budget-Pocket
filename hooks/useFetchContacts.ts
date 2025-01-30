@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
-import { createClient } from "@/utils/supabase/client";
 import { Contact } from "@/schemas/transactionsSchemas";
+import { createClient } from "@/utils/supabase/client";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export const useFetchContacts = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
@@ -18,6 +19,7 @@ export const useFetchContacts = () => {
       setContacts(data);
     } catch (error) {
       console.error(error);
+      toast.error("Error fetching contacts");
     } finally {
       setIsLoading(false);
     }

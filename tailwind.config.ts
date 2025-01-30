@@ -23,6 +23,7 @@ export default {
         1000: "1000ms",
       },
       screens: {
+        mobile: "410px",
         "sm-490": "490px",
       },
       colors: {

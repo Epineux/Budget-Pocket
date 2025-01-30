@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const getTotalSpent = ({
-  transactionsData,
+  transactionsData = [],
   budgetCategories,
   currentMonth,
   currentYear,

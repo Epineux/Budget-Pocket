@@ -36,10 +36,7 @@ const NewTransactionDialog = () => {
             balance.
           </DialogDescription>
         </DialogHeader>
-        <TransactionDialogForm
-          isOpen={open}
-          onSubmitted={() => setOpen(false)}
-        />
+        <TransactionDialogForm onSubmitted={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   );

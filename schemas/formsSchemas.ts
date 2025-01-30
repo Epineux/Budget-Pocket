@@ -2,7 +2,7 @@ import { z } from "zod";
 import { transactionCategorySchema } from "./transactionsSchemas";
 
 export const transactionFormSchema = z.object({
-  contact: z.string(),
+  contact: z.string().min(1, "Please select a contact"),
   amount: z.number().positive("Amount must be greater than 0"),
   date: z.date(),
   category: transactionCategorySchema,
