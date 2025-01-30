@@ -4,15 +4,13 @@ import { z } from "zod";
 
 export async function getBudgets() {
   const supabase = await createClient();
-  const { data: rawTransactions, error } = await supabase
-    .from("budgets")
-    .select("*");
+  const { data, error } = await supabase.from("budgets").select("*");
 
   if (error) {
     throw new Error(`Failed to fetch budgets: ${error.message}`);
   }
 
-  const parsedData = z.array(budgetsSchema).safeParse(rawTransactions);
+  const parsedData = z.array(budgetsSchema).safeParse(data);
 
   if (!parsedData.success) {
     throw new Error(`Invalid data format: ${parsedData.error}`);

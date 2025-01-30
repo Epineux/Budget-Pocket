@@ -19,3 +19,13 @@ export const budgetFormSchema = z.object({
   maximumSpend: z.number().positive().int(),
   theme: z.string().nonempty("Please select a theme"),
 });
+
+export const potFormSchema = z.object({
+  name: z.string().nonempty("Please choose a name").max(20),
+  target: z.number().positive().int(),
+  theme: z.string().nonempty("Please select a theme"),
+});
+
+export const potChangeAmountSchema = z.object({
+  newAmount: z.number().positive().int(),
+});

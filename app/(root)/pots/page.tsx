@@ -8,9 +8,7 @@ const page = () => {
         <h1 className="h1 text-grey-900">Pots</h1>
         <NewPotDialog />
       </div>
-      <section className="mt-2xl">
-        <PotList />
-      </section>
+      <PotList />
     </main>
   );
 };

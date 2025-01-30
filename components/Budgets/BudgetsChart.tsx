@@ -99,14 +99,6 @@ export default function DonutChart({
     );
   }
 
-  if (!budgetsData.length) {
-    return (
-      <div className="text-small-bold mx-auto my-lg flex h-[240px] w-[240px] items-center justify-center rounded-full shadow-lg">
-        <p>No current budgets, add some!</p>
-      </div>
-    );
-  }
-
   return (
     <div className="my-lg flex items-center justify-center">
       <PieChart

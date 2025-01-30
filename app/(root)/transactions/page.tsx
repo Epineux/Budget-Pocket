@@ -1,3 +1,4 @@
+import NoCurrentData from "@/components/NoCurrentData";
 import NewTransactionDialog from "@/components/Transactions/NewTransactionDialog";
 import { columns } from "@/components/Transactions/transactionsColumns";
 import TransactionsTable from "@/components/Transactions/TransactionsTable";
@@ -15,9 +16,13 @@ const page = async () => {
           <NewTransactionDialog />
         </div>
         <section className="mt-2xl">
-          <Suspense fallback={<div>Loading...</div>}>
-            <TransactionsTable columns={columns} data={transactionsData} />
-          </Suspense>
+          {transactionsData.length > 0 ? (
+            <Suspense fallback={<div>Loading...</div>}>
+              <TransactionsTable columns={columns} data={transactionsData} />
+            </Suspense>
+          ) : (
+            <NoCurrentData pageName="transactions" />
+          )}
         </section>
       </main>
     );

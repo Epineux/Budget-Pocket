@@ -9,32 +9,34 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { potChangeAmountSchema } from "@/schemas/formsSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
 import { ControllerRenderProps, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Input } from "../ui/input";
 
-const formSchema = z.object({
-  newAmount: z.number().positive().int(),
-});
+const formSchema = potChangeAmountSchema;
 
 type Props = {
-  setNewAmount: React.Dispatch<React.SetStateAction<number>>;
   currentAmount: number;
   newSavingsType: "addition" | "subtraction";
   potTarget: number;
-  onDialogClose?: () => void;
+
   dialogOpen: boolean;
+  potId: string;
+  handleAmountChange: (amount: number) => void;
+  handleSubmit: (amount: number) => Promise<void>;
 };
 
 export function SavingsDialogForm({
-  setNewAmount,
   currentAmount,
   newSavingsType,
   potTarget,
-  onDialogClose,
+
   dialogOpen,
+  handleAmountChange,
+  handleSubmit,
 }: Props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -62,16 +64,11 @@ export function SavingsDialogForm({
     const newAmount = parseFloat(cleanedValue) || 0;
 
     field.onChange(newAmount);
-    setNewAmount(() =>
-      newSavingsType === "addition"
-        ? newAmount + currentAmount
-        : currentAmount - newAmount,
-    );
+    handleAmountChange(newAmount);
   };
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-    onDialogClose?.();
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    await handleSubmit(values.newAmount);
   };
 
   return (

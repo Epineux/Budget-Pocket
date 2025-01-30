@@ -12,7 +12,6 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import data from "../../constants/data.json";
 import {
   Select,
   SelectContent,
@@ -21,16 +20,21 @@ import {
   SelectValue,
 } from "../ui/select";
 
+import { THEMES } from "@/constants/themes";
+import { useSubmitPot } from "@/hooks/useSubmitPot";
+import { potFormSchema } from "@/schemas/formsSchemas";
 import { z } from "zod";
 import { Input } from "../ui/input";
 
-const formSchema = z.object({
-  name: z.string().nonempty("Please choose a name").max(20),
-  target: z.number().positive().int(),
-  theme: z.string().nonempty("Please select a theme"),
-});
+type PotDialogFormProps = {
+  onSubmitted?: () => void;
+};
 
-export function PotDialogForm() {
+const formSchema = potFormSchema;
+
+export function PotDialogForm({ onSubmitted }: PotDialogFormProps) {
+  const themes = THEMES;
+  const { createPot, isSubmitting } = useSubmitPot();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -39,10 +43,18 @@ export function PotDialogForm() {
       theme: "",
     },
   });
-  const themes = data.themes;
+
+  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+    const success = await createPot(values);
+    if (success) {
+      form.reset();
+      onSubmitted?.();
+    }
+  };
+
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+    <Form {...form} aria-label="Pot Form">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-3">
         <FormField
           control={form.control}
           name="name"
@@ -140,14 +152,14 @@ export function PotDialogForm() {
             </FormItem>
           )}
         />
-        <Button className="!mt-2xl h-12 w-full" type="submit">
+        <Button
+          className="!mt-2xl h-12 w-full"
+          type="submit"
+          disabled={isSubmitting}
+        >
           Add Pot
         </Button>
       </form>
     </Form>
   );
-}
-
-function onSubmit(values: z.infer<typeof formSchema>) {
-  console.log(values);
 }

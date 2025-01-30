@@ -10,46 +10,25 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
-import { useState } from "react";
+import { useSavingsDialog } from "@/hooks/useSavingsDialog";
+import { Pot } from "@/schemas/potsSchema";
 import { SavingsDialogForm } from "./SavingsDialogForm";
 
 type Props = {
   newSavings: "addition" | "subtraction";
-  pot: {
-    name: string;
-    target: number;
-    total: number;
-    theme: string;
-  };
+  pot: Pot;
 };
 const SavingsDialog = ({ newSavings, pot }: Props) => {
-  const [newAmount, setNewAmount] = useState(pot.total);
-  const [open, setOpen] = useState(false);
-
-  const handleOpenChange = (isOpen: boolean) => {
-    setOpen(isOpen);
-    if (!isOpen) {
-      setNewAmount(pot.total);
-    }
-  };
-
-  const getPercentageText = () => {
-    if (newSavings === "addition") {
-      return newAmount >= pot.target
-        ? "100%"
-        : `${((newAmount / pot.target) * 100).toFixed(1)}%`;
-    } else {
-      return `${Math.max(0, (newAmount / pot.target) * 100).toFixed(1)}%`;
-    }
-  };
-
-  const getTotalText = () => {
-    if (newSavings === "addition") {
-      return newAmount >= pot.target ? pot.target : newAmount;
-    } else {
-      return Math.max(0, newAmount);
-    }
-  };
+  const {
+    open,
+    newAmount,
+    handleOpenChange,
+    getPercentageText,
+    getTotalText,
+    isButtonDisabled,
+    handleAmountChange,
+    handleSubmit,
+  } = useSavingsDialog({ pot, newSavings });
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -57,6 +36,7 @@ const SavingsDialog = ({ newSavings, pot }: Props) => {
         <Button
           className="text-standard-bold flex-1 rounded-lg border border-beige-100 bg-beige-100 hover:border-beige-500 hover:bg-beige-100/50"
           variant="ghost"
+          disabled={isButtonDisabled}
           size={"potCardButton"}
         >
           {newSavings === "addition" ? "+ Add Money" : "Withdraw"}
@@ -99,12 +79,13 @@ const SavingsDialog = ({ newSavings, pot }: Props) => {
           </div>
         </div>
         <SavingsDialogForm
-          setNewAmount={setNewAmount}
           currentAmount={pot.total}
           newSavingsType={newSavings}
           potTarget={pot.target}
-          onDialogClose={() => setOpen(false)}
           dialogOpen={open}
+          potId={pot.id}
+          handleAmountChange={handleAmountChange}
+          handleSubmit={handleSubmit}
         />
       </DialogContent>
     </Dialog>

@@ -8,7 +8,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div className="flex bg-beige-100">
       <Sidebar />
       {/* Padding bottom for fixed footer */}
-      <div className="flex-1 pb-20 md:pb-0">{children}</div>
+      <div className="min-h-screen flex-1 pb-20 md:pb-0">{children}</div>
       <Toaster richColors position="top-right" />
       <LogOutButton />
       <FooterMenu />
