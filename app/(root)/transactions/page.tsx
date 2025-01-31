@@ -8,7 +8,6 @@ import { Suspense } from "react";
 const page = async () => {
   try {
     const transactionsData = await getTransactions();
-
     return (
       <main className="px-md py-xl @container sm-490:px-3xl sm-490:py-2xl">
         <div className="flex items-center justify-between">

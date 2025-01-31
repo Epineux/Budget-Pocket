@@ -36,8 +36,8 @@ import {
 
 type NewContactDialogProps = {
   onContactCreated?: () => void;
-  open?: boolean; // highlight-line
-  onOpenChange?: (open: boolean) => void; // highlight-line
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 };
 
 const formSchema = contactFormSchema;

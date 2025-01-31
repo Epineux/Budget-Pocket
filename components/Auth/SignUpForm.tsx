@@ -24,7 +24,6 @@ export function SignUpForm() {
     undefined,
   );
 
-  // No changes to useForm
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {

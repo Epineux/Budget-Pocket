@@ -29,3 +29,9 @@ export const potFormSchema = z.object({
 export const potChangeAmountSchema = z.object({
   newAmount: z.number().positive().int(),
 });
+
+export const billFormSchema = z.object({
+  contact: z.string().nonempty("Please select a contact"),
+  amount: z.number().positive(),
+  dueDate: z.string(),
+});
