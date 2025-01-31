@@ -8,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { RecurringBill } from "@/schemas/recurringBillsSchema";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -23,15 +24,12 @@ import React from "react";
 import BillsSort from "./BillsSort";
 import BillsTablePaginationControls from "./BillsTablePaginationControls";
 
-interface BillsTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: Array<TData>;
+interface BillsTableProps {
+  columns: ColumnDef<RecurringBill, unknown>[];
+  data: RecurringBill[];
 }
 
-const BillsTable = <TData, TValue>({
-  columns,
-  data,
-}: BillsTableProps<TData, TValue>) => {
+const BillsTable = ({ columns, data }: BillsTableProps) => {
   const [sorting, setSorting] = React.useState<SortingState>([
     { id: "dueDate", desc: false },
   ]);

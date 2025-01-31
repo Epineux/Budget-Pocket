@@ -1,11 +1,6 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { parseDueDate } from "@/utils/dateUtils";
-import { ColumnDef } from "@tanstack/react-table";
-import clsx from "clsx";
-import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,32 +9,28 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { RecurringBill } from "@/schemas/recurringBillsSchema";
+import { parseDueDate } from "@/utils/dateUtils";
+import { ColumnDef } from "@tanstack/react-table";
+import clsx from "clsx";
 import Image from "next/image";
 
 const today = new Date();
 const dayOfMonth = today.getDate();
 
-export const recurringBillSchema = z.object({
-  avatar: z.string().url(),
-  name: z.string().min(1),
-  dueDate: z.string(),
-  amount: z.number(),
-  paid: z.boolean(),
-});
-export type RecurringBill = z.infer<typeof recurringBillSchema>;
-
 export const columns: ColumnDef<RecurringBill>[] = [
   {
     accessorKey: "name",
+    accessorFn: (row) => row.contacts.name,
     header: () => (
       <div className="text-small text-nowrap text-grey-500">Bill Title</div>
     ),
 
     cell: ({ row }) => {
-      const name = row.getValue("name") as string;
-      const avatar = row.original.avatar;
+      const name = row.original.contacts.name;
+      const avatar = row.original.contacts.avatar;
       const dueDate = row.original.dueDate;
-      const isPaid = row.original.paid;
+      const isPaid = row.original.isPaid;
       return (
         <div>
           {/* Desktop */}
@@ -92,7 +83,7 @@ export const columns: ColumnDef<RecurringBill>[] = [
     ),
     cell: ({ row }) => {
       const dueDate = row.original.dueDate;
-      const isPaid = row.original.paid;
+      const isPaid = row.original.isPaid;
 
       return (
         <div className=" hidden items-center gap-xs @[590px]:flex">
@@ -127,7 +118,7 @@ export const columns: ColumnDef<RecurringBill>[] = [
     ),
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("amount"));
-      const isPaid = row.original.paid;
+      const isPaid = row.original.isPaid;
       const dueDate = row.original.dueDate;
       const stringAmount = amount.toFixed(2).toString();
       return (

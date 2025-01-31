@@ -2,10 +2,10 @@ import BillsSummary from "@/components/RecurringBills/BillsSummary";
 import BillsTable from "@/components/RecurringBills/BillsTable";
 import TotalBills from "@/components/RecurringBills/TotalBills";
 import { columns } from "@/components/RecurringBills/billsColumns";
-import data from "@/constants/data.json";
-
-const page = () => {
-  const recurringBillsData = data.recurringBillsTable;
+import { getRecurringBills } from "@/lib/recurringBills";
+const page = async () => {
+  const recurringBillsData = await getRecurringBills();
+  console.log(recurringBillsData);
   return (
     <main className="px-md py-xl @container sm-490:px-3xl sm-490:py-2xl">
       <div className="flex items-center justify-between">

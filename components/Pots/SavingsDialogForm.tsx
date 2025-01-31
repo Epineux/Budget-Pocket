@@ -22,21 +22,21 @@ type Props = {
   currentAmount: number;
   newSavingsType: "addition" | "subtraction";
   potTarget: number;
-
   dialogOpen: boolean;
   potId: string;
   handleAmountChange: (amount: number) => void;
   handleSubmit: (amount: number) => Promise<void>;
+  isSubmitting: boolean;
 };
 
 export function SavingsDialogForm({
   currentAmount,
   newSavingsType,
   potTarget,
-
   dialogOpen,
   handleAmountChange,
   handleSubmit,
+  isSubmitting,
 }: Props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -60,9 +60,8 @@ export function SavingsDialogForm({
       "newAmount"
     >,
   ) => {
-    const cleanedValue = e.target.value.replace(/[^\d.]/g, "");
-    const newAmount = parseFloat(cleanedValue) || 0;
-
+    const cleanedValue = e.target.value.replace(/\D/g, "");
+    const newAmount = parseInt(cleanedValue, 10) || 0;
     field.onChange(newAmount);
     handleAmountChange(newAmount);
   };
@@ -110,7 +109,11 @@ export function SavingsDialogForm({
           )}
         />
 
-        <Button className="!mt-2xl h-12 w-full" type="submit">
+        <Button
+          className="!mt-2xl h-12 w-full"
+          type="submit"
+          disabled={isSubmitting}
+        >
           {newSavingsType === "addition"
             ? "Confirm Addition"
             : "Confirm Withdrawal"}

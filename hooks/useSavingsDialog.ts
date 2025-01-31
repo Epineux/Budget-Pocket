@@ -13,7 +13,8 @@ export const useSavingsDialog = ({
   pot,
   newSavings,
 }: UseSavingsDialogProps) => {
-  const [newAmount, setNewAmount] = useState(pot.total);
+  const [projectedTotal, setProjectedTotal] = useState(pot.total);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
   const supabase = createClient();
   const router = useRouter();
@@ -21,33 +22,34 @@ export const useSavingsDialog = ({
   const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen);
     if (!isOpen) {
-      setNewAmount(pot.total);
+      setProjectedTotal(pot.total);
     }
   };
 
   const getPercentageText = () => {
     if (newSavings === "addition") {
-      return newAmount >= pot.target
+      return projectedTotal >= pot.target
         ? "100%"
-        : `${((newAmount / pot.target) * 100).toFixed(1)}%`;
+        : `${((projectedTotal / pot.target) * 100).toFixed(1)}%`;
     }
-    return `${Math.max(0, (newAmount / pot.target) * 100).toFixed(1)}%`;
+    return `${Math.max(0, (projectedTotal / pot.target) * 100).toFixed(1)}%`;
   };
 
   const getTotalText = () => {
     if (newSavings === "addition") {
-      return newAmount >= pot.target ? pot.target : newAmount;
+      return projectedTotal >= pot.target ? pot.target : projectedTotal;
     }
-    return Math.max(0, newAmount);
+    return Math.max(0, projectedTotal);
   };
 
   const handleAmountChange = (amount: number) => {
     const newTotal =
       newSavings === "addition" ? amount + pot.total : pot.total - amount;
-    setNewAmount(newTotal);
+    setProjectedTotal(newTotal);
   };
 
   const handleSubmit = async (amount: number) => {
+    setIsSubmitting(true);
     const newTotal =
       newSavings === "addition" ? pot.total + amount : pot.total - amount;
 
@@ -67,19 +69,23 @@ export const useSavingsDialog = ({
       router.refresh();
       handleOpenChange(false);
     }
+    setIsSubmitting(false);
   };
 
   const isButtonDisabled =
-    newSavings === "addition" ? newAmount >= pot.target : newAmount <= 0;
+    newSavings === "addition"
+      ? projectedTotal >= pot.target
+      : projectedTotal <= 0;
 
   return {
     open,
-    newAmount,
+    projectedTotal,
     handleOpenChange,
     getPercentageText,
     getTotalText,
     handleAmountChange,
     handleSubmit,
     isButtonDisabled,
+    isSubmitting,
   };
 };

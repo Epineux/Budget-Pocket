@@ -21,13 +21,14 @@ type Props = {
 const SavingsDialog = ({ newSavings, pot }: Props) => {
   const {
     open,
-    newAmount,
+    projectedTotal,
     handleOpenChange,
     getPercentageText,
     getTotalText,
     isButtonDisabled,
     handleAmountChange,
     handleSubmit,
+    isSubmitting,
   } = useSavingsDialog({ pot, newSavings });
 
   return (
@@ -62,7 +63,9 @@ const SavingsDialog = ({ newSavings, pot }: Props) => {
           </div>
           <Progress
             value={
-              newAmount >= pot.target ? 100 : (newAmount / pot.target) * 100
+              projectedTotal >= pot.target
+                ? 100
+                : (projectedTotal / pot.target) * 100
             }
             className="mb-sm mt-md h-2"
             style={
@@ -86,6 +89,7 @@ const SavingsDialog = ({ newSavings, pot }: Props) => {
           potId={pot.id}
           handleAmountChange={handleAmountChange}
           handleSubmit={handleSubmit}
+          isSubmitting={isSubmitting}
         />
       </DialogContent>
     </Dialog>
