@@ -1,5 +1,7 @@
+import Loader from "@/components/Loader";
 import NewPotDialog from "@/components/Pots/NewPotDialog";
 import PotList from "@/components/Pots/PotList";
+import { Suspense } from "react";
 
 const page = () => {
   return (
@@ -8,7 +10,9 @@ const page = () => {
         <h1 className="h1 text-grey-900">Pots</h1>
         <NewPotDialog />
       </div>
-      <PotList />
+      <Suspense fallback={<Loader />}>
+        <PotList />
+      </Suspense>
     </main>
   );
 };
