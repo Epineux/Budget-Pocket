@@ -147,7 +147,7 @@ export function BillDialogForm({ onSubmitted }: BillDialogFormProps) {
                   >
                     <SelectTrigger className="h-12 border border-beige-500 focus:ring-1 focus:ring-grey-900 focus:ring-offset-1 data-[placeholder]:text-neutral-500 [&>svg]:hidden">
                       <div className="text-standard mx-xs flex w-full justify-between gap-md">
-                        <SelectValue placeholder="Select Category" />
+                        <SelectValue placeholder="Select due day" />
                         <Image
                           src={"/assets/images/icon-caret-down.svg"}
                           alt="Dropdown"

@@ -1,5 +1,6 @@
 import { formatNumber } from "@/utils/formatNumber";
 import clsx from "clsx";
+import { EditBalanceDialog } from "./EditBalanceDialog";
 
 type BalanceInfoProps = {
   title: string;
@@ -8,6 +9,7 @@ type BalanceInfoProps = {
 };
 const BalanceInfo = ({ title, amount, currency }: BalanceInfoProps) => {
   const amountFormatted = formatNumber(amount);
+
   return (
     <div
       className={clsx("rounded-xl p-xl", {
@@ -15,9 +17,19 @@ const BalanceInfo = ({ title, amount, currency }: BalanceInfoProps) => {
         "bg-white text-grey-900": title !== "Current Balance",
       })}
     >
-      <h4 className="text-standard">{title}</h4>
+      <div className="flex items-center justify-between">
+        <h4 className="text-standard">{title}</h4>
+        {title !== "Expenses" && (
+          <EditBalanceDialog title={title} currentAmount={amount} />
+        )}
+      </div>
       {/* To not overflow, h2 until desktop fullscreen */}
-      <p className="h2 xl:h1 mt-sm">
+      <p
+        className={clsx(
+          "h2 xl:h1 mt-sm",
+          title === "Current Balance" && amount < 0 && "text-secondary-red",
+        )}
+      >
         {currency}
         {amountFormatted}
       </p>

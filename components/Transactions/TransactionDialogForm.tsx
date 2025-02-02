@@ -12,6 +12,7 @@ import {
 import { TRANSACTION_CATEGORIES } from "@/constants/transactionCategories";
 import { useFetchContacts } from "@/hooks/useFetchContacts";
 import { useSubmitTransaction } from "@/hooks/useSubmitTransaction";
+import { addTransactionToBalance } from "@/lib/userInfosClient";
 import { transactionFormSchema } from "@/schemas/formsSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
@@ -64,6 +65,7 @@ export function TransactionDialogForm({
       amount,
     });
     if (success) {
+      addTransactionToBalance(amount);
       form.reset();
       onSubmitted?.();
     }

@@ -1,9 +1,35 @@
+import { getPots } from "@/lib/pots";
 import Image from "next/image";
 import Link from "next/link";
-import data from "../../constants/data.json";
+import NoCurrentData from "../NoCurrentData";
+import GridList from "./GridList";
 
-const PotsOverview = () => {
-  const potsInfo = data.pots;
+const PotsOverview = async () => {
+  const potsData = await getPots();
+
+  if (potsData.length === 0) {
+    return (
+      <div className=" rounded-xl bg-white px-lg py-xl @container sm-490:px-2xl sm-490:py-2xl">
+        <div className="flex justify-between">
+          <h2 className="h2 text-grey-900">Pots</h2>
+          <Link
+            className="text-standard flex items-center gap-sm text-grey-500 hover:brightness-50"
+            href="/pots"
+          >
+            <span>See Details</span>
+            <Image
+              src="/assets/images/icon-caret-right.svg"
+              alt="Caret Right"
+              width={5}
+              height={8}
+              className="w-auto"
+            />
+          </Link>
+        </div>
+        <NoCurrentData pageName="pots" />
+      </div>
+    );
+  }
   return (
     <div className=" rounded-xl bg-white px-lg py-xl @container sm-490:px-2xl sm-490:py-2xl">
       <div className="flex justify-between">
@@ -38,26 +64,7 @@ const PotsOverview = () => {
             <span className="h2 xl:h1 text-grey-900">$850</span>
           </div>
         </div>
-        <ul className="grid grid-cols-2 gap-md">
-          {potsInfo
-            .filter((pot) => pot.name !== "Holiday")
-            .map((pot) => (
-              <li key={pot.name} className="flex items-center gap-md">
-                <div
-                  style={{
-                    backgroundColor: pot.theme,
-                  }}
-                  className="h-full w-1 rounded-full"
-                ></div>
-                <div className="flex flex-col gap-2xs">
-                  <span className="text-small text-grey-500">{pot.name}</span>
-                  <span className="text-standard-bold text-grey-900">
-                    ${pot.total}
-                  </span>
-                </div>
-              </li>
-            ))}
-        </ul>
+        <GridList potsData={potsData} />
       </div>
     </div>
   );

@@ -1,19 +1,12 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { RecurringBill } from "@/schemas/recurringBillsSchema";
 import { parseDueDate } from "@/utils/dateUtils";
 import { ColumnDef } from "@tanstack/react-table";
 import clsx from "clsx";
 import Image from "next/image";
+import { ActionsDropdown } from "./ActionDropdown";
 
 const today = new Date();
 const dayOfMonth = today.getDate();
@@ -141,37 +134,20 @@ export const columns: ColumnDef<RecurringBill>[] = [
   },
   {
     id: "actions",
-    cell: ({}) => {
-      // const recurringBill = row.original;
-
+    cell: ({ row }) => {
+      const recurringBillId = row.original.id;
+      const amount = row.original.amount;
+      const dueDate = row.original.dueDate;
+      const isPaid = row.original.isPaid;
+      const contact = row.original.contacts;
       return (
-        <div className="hidden shrink-0 justify-end @[510px]:flex">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild style={{ boxShadow: "none" }}>
-              <Button
-                variant="ghost"
-                className="h-8 w-4 p-0 focus:border focus:border-grey-900"
-              >
-                <Image
-                  src="/assets/images/icon-ellipsis.svg"
-                  width={14}
-                  height={4}
-                  alt="Edit Icon"
-                  className="rotate-90"
-                />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem className="px-md">
-                Edit Recurring Bill
-              </DropdownMenuItem>
-              <DropdownMenuSeparator className="mx-md" />
-              <DropdownMenuItem className="px-md text-secondary-red">
-                Delete Recurring Bill
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+        <ActionsDropdown
+          recurringBillId={recurringBillId}
+          isPaid={isPaid}
+          amount={amount}
+          dueDate={dueDate}
+          contact={contact}
+        />
       );
     },
   },

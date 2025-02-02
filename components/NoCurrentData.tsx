@@ -30,7 +30,7 @@ const NoCurrentData = ({ pageName }: { pageName: string }) => {
             alt="Pots Icon"
           />
         );
-      case "recurringBills":
+      case "recurring bills":
         return (
           <Image
             src="/assets/images/icon-nav-recurring-bills.svg"
@@ -48,7 +48,7 @@ const NoCurrentData = ({ pageName }: { pageName: string }) => {
     <div className="mt-2xl flex h-80 flex-col items-center justify-center gap-2xs p-xl">
       {messageLogo}
       <h2 className="h2 mt-sm text-grey-900">No {pageName} found</h2>
-      <p className="text-standard text-grey-900">
+      <p className="text-standard text-center text-grey-900">
         You don&apos;t have any {pageName} yet. Add one to get started !
       </p>
     </div>

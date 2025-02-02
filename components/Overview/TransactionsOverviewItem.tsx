@@ -1,15 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Transaction } from "@/schemas/transactionsSchemas";
 import { formatDateToReadable } from "@/utils/dateUtils";
 import clsx from "clsx";
-type Transaction = {
-  avatar: string;
-  name: string;
-  category: string;
-  date: string;
-  amount: number;
-  recurring: boolean;
-};
-
 type Props = {
   transaction: Transaction;
   isLast: boolean;
@@ -39,10 +31,12 @@ const TransactionsItemOverviewItem = ({ transaction, isLast }: Props) => {
       <div className="flex justify-between">
         <div className="flex items-center gap-md">
           <Avatar>
-            <AvatarImage src={transaction.avatar} alt="Avatar" />
+            <AvatarImage src={transaction.contacts.avatar} alt="Avatar" />
             <AvatarFallback>?</AvatarFallback>
           </Avatar>
-          <p className="text-standard-bold text-grey-900">{transaction.name}</p>
+          <p className="text-standard-bold text-grey-900">
+            {transaction.contacts.name}
+          </p>
         </div>
         <div className="flex flex-col items-end gap-xs">
           <DisplayPrice />

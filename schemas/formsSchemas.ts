@@ -35,3 +35,14 @@ export const billFormSchema = z.object({
   amount: z.number().positive(),
   dueDate: z.string(),
 });
+
+
+// Updates Form Schemas
+
+export const balanceUpdateFormSchema = z.object({
+  newAmount: z.number(),
+})
+export const billUpdateFormSchema = z.object({
+  newAmount: z.number().positive(),
+  dueDate: z.string(),
+})
