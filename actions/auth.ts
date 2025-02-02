@@ -1,10 +1,9 @@
 "use server";
 
-import { loginSchema, signUpSchema } from "@/schemas/authSchema";
+import { loginSchema } from "@/schemas/authSchema";
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-
 
 export async function handleLogin(prevState: any, formData: FormData) {
   const supabase = await createClient();
@@ -34,38 +33,30 @@ export async function handleLogin(prevState: any, formData: FormData) {
   redirect("/");
 }
 
-export async function handleSignUp(prevState: any, formData: FormData) {
+export async function handleSignUp(formData: FormData) {
   const supabase = await createClient();
 
-  const result = signUpSchema.safeParse(Object.fromEntries(formData));
-  if (!result.success) {
-    return {
-      errors: result.error.flatten().fieldErrors,
-    };
-  }
-  const { email, password } = result.data;
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
 
-  const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
   });
 
-  if (signUpError) {
-    console.error("Sign-up error:", signUpError);
-    return {
-      errors: {
-        email: [signUpError.message],
-      },
-    };
+  if (error) {
+    console.error("Sign-up error:", error);
+    return { error: error.message };
   }
 
-  if (signUpData?.user) {
-    return { success: true };
+  if (data.user) {
+    console.log("User created:", data.user);
+    redirect("/login");
   }
 
-  console.error("Sign-up data:", signUpData);
-  return { errors: { email: ["Something went wrong during sign-up."] } };
+  return { error: "Something went wrong." };
 }
+
 export async function logout() {
   const supabase = await createClient();
 
