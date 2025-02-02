@@ -1,6 +1,6 @@
 "use server";
 
-import { loginSchema } from "@/schemas/authSchema";
+import { loginSchema, signUpSchema } from "@/schemas/authSchema";
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -29,32 +29,47 @@ export async function handleLogin(prevState: any, formData: FormData) {
       },
     };
   }
+
   revalidatePath("/", "layout");
   redirect("/");
 }
 
-export async function handleSignUp(formData: FormData) {
+export async function handleSignUp(prevState: any, formData: FormData) {
   const supabase = await createClient();
 
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
+  const result = signUpSchema.safeParse(Object.fromEntries(formData));
+  if (!result.success) {
+    return {
+      errors: result.error.flatten().fieldErrors,
+    };
+  }
 
-  const { data, error } = await supabase.auth.signUp({
+  const { name, email, password } = result.data;
+
+  const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
     email,
     password,
+    options: {
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/confirm?next=/login`,
+      data: {
+        name: name,
+      },
+    },
   });
 
-  if (error) {
-    console.error("Sign-up error:", error);
-    return { error: error.message };
+  if (signUpError) {
+    return {
+      errors: {
+        email: [signUpError.message],
+      },
+    };
   }
 
-  if (data.user) {
-    console.log("User created:", data.user);
-    redirect("/login");
+  if (signUpData?.user) {
+    return { success: true };
   }
 
-  return { error: "Something went wrong." };
+  return { errors: { email: ["Something went wrong"] } };
 }
 
 export async function logout() {
