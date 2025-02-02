@@ -1,13 +1,10 @@
-import NoCurrentData from "@/components/NoCurrentData";
 import NewTransactionDialog from "@/components/Transactions/NewTransactionDialog";
-import { columns } from "@/components/Transactions/transactionsColumns";
-import TransactionsTable from "@/components/Transactions/TransactionsTable";
-import { getTransactions } from "@/lib/transactions";
+import TransactionsList from "@/components/Transactions/TransactionsList";
+import { Loader } from "lucide-react";
 import { Suspense } from "react";
 
-const page = async () => {
-  try {
-    const transactionsData = await getTransactions();
+const page = () => {
+  {
     return (
       <main className="px-md py-xl @container sm-490:px-3xl sm-490:py-2xl">
         <div className="flex items-center justify-between">
@@ -15,24 +12,11 @@ const page = async () => {
           <NewTransactionDialog />
         </div>
         <section className="mt-2xl">
-          {transactionsData.length > 0 ? (
-            <Suspense fallback={<div>Loading...</div>}>
-              <TransactionsTable columns={columns} data={transactionsData} />
-            </Suspense>
-          ) : (
-            <NoCurrentData pageName="transactions" />
-          )}
+          <Suspense fallback={<Loader />}>
+            <TransactionsList />
+          </Suspense>
         </section>
       </main>
-    );
-  } catch (error) {
-    return (
-      <div className="rounded-lg border border-red-200 bg-red-50 p-4">
-        <h2 className="text-red-700">Error loading transactions</h2>
-        <p className="text-red-600">
-          {error instanceof Error ? error.message : "Unknown error occurred"}
-        </p>
-      </div>
     );
   }
 };
