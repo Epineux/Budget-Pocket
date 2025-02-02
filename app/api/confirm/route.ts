@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
     // Insert a new row into the `userInfos` table with default values
     const { error: insertError } = await supabase
       .from("userInfos")
-      .insert([{ user_id: user.id, column1: 0, column2: 0, column3: 0 }]); // Replace `column1`, `column2`, etc. with your actual column names
+      .insert([{ user_id: user.id, currentBalance: 0, income: 0 }]);
 
     if (insertError) {
       console.error("Failed to create userInfos:", insertError.message);
