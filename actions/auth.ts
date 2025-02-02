@@ -75,6 +75,7 @@ export async function logout() {
       console.error("Error signing out:", error);
       return { error: error.message };
     }
+    revalidatePath("/", "layout");
     return { success: true };
   } catch (error) {
     console.error("Error in logout:", error);

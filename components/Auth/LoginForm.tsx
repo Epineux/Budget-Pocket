@@ -14,14 +14,14 @@ import { Input } from "@/components/ui/input";
 import { AUTH_MESSAGES } from "@/constants/messages";
 import { loginSchema } from "@/schemas/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSearchParams } from "next/navigation";
-import { useActionState, useEffect } from "react";
+import { useSearchParams } from "next/navigation"; // This hook needs Suspense
+import { Suspense, useActionState, useEffect } from "react"; // Import Suspense
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
 import { z } from "zod";
 import PasswordField from "./PasswordField";
 
-export function LoginForm() {
+function LoginFormContent() {
   const searchParams = useSearchParams();
   const [state, loginAction, isPending] = useActionState(
     handleLogin,
@@ -102,5 +102,13 @@ export function LoginForm() {
       </form>
       <Toaster richColors position="top-right" />
     </Form>
+  );
+}
+
+export default function LoginForm() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginFormContent />
+    </Suspense>
   );
 }

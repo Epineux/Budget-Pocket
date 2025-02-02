@@ -4,8 +4,18 @@ import BalanceInfo from "./BalanceInfo";
 
 const UserBalances = async () => {
   try {
-    const userInfos = await getUserInfos();
-    const transactions = await getTransactions();
+    const [userInfos, transactions] = await Promise.all([
+      getUserInfos(),
+      getTransactions(),
+    ]);
+
+    if (!userInfos) {
+      return (
+        <div className="rounded-lg border border-red-200 bg-red-50 p-4">
+          <h2 className="text-red-700">Error loading user balances</h2>
+        </div>
+      );
+    }
     const transactionsExpenses =
       transactions?.filter((transaction) => transaction.amount < 0) || [];
     const totalExpenses = transactionsExpenses.reduce(
