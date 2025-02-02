@@ -9,18 +9,9 @@ const UserBalances = async () => {
       getTransactions(),
     ]);
 
-    // Check if userInfos exists and has required properties
-    if (
-      !userInfos ||
-      typeof userInfos.currentBalance === "undefined" ||
-      typeof userInfos.income === "undefined"
-    ) {
-      return (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-4">
-          <h2 className="text-red-700">Error loading user balances</h2>
-        </div>
-      );
-    }
+    // Default values if no userInfos
+    const currentBalance = userInfos?.currentBalance ?? 0;
+    const income = userInfos?.income ?? 0;
 
     // Ensure transactions is an array, default to empty array if null/undefined
     const transactionsExpenses = (transactions || []).filter(
@@ -36,19 +27,22 @@ const UserBalances = async () => {
       <section className="mt-2xl grid grid-cols-1 gap-sm @[600px]:grid-cols-3 sm-490:gap-xl">
         <BalanceInfo
           title="Current Balance"
-          amount={userInfos.currentBalance}
+          amount={currentBalance}
           currency="$"
         />
-        <BalanceInfo title="Income" amount={userInfos.income} currency="$" />
+        <BalanceInfo title="Income" amount={income} currency="$" />
         <BalanceInfo title="Expenses" currency="$" amount={totalExpenses} />
       </section>
     );
   } catch (error) {
     console.error("Error loading user balances:", error);
+    // Even in case of error, show zeros instead of error message
     return (
-      <div className="rounded-lg border border-red-200 bg-red-50 p-4">
-        <h2 className="text-red-700">Error loading user balances</h2>
-      </div>
+      <section className="mt-2xl grid grid-cols-1 gap-sm @[600px]:grid-cols-3 sm-490:gap-xl">
+        <BalanceInfo title="Current Balance" amount={0} currency="$" />
+        <BalanceInfo title="Income" amount={0} currency="$" />
+        <BalanceInfo title="Expenses" currency="$" amount={0} />
+      </section>
     );
   }
 };
