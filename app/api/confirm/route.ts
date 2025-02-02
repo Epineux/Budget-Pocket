@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
   const supabase = await createClient();
 
   try {
-    const { error: verifyError, data } = await supabase.auth.verifyOtp({
+    const { error: verifyError } = await supabase.auth.verifyOtp({
       type,
       token_hash,
     });
@@ -27,24 +27,7 @@ export async function GET(request: NextRequest) {
       return redirect(`/login?code=${getErrorCode(verifyError)}`);
     }
 
-    // Get the user ID after successful verification
-    const user = data.user;
-    if (!user) {
-      console.error("User not found after verification");
-      return redirect("/login?code=user_not_found");
-    }
-
-    // Insert a new row into the `userInfos` table with default values
-    const { error: insertError } = await supabase
-      .from("userInfos")
-      .insert([{ user_id: user.id, currentBalance: 0, income: 0 }]);
-
-    if (insertError) {
-      console.error("Failed to create userInfos:", insertError.message);
-      return redirect("/login?code=user_info_creation_failed");
-    }
-
-    // Directly redirect after successful verification and userInfos creation
+    // Directly redirect after successful verification
     return new Response(null, {
       status: 303,
       headers: { Location: next },
