@@ -1,6 +1,7 @@
+import Loader from "@/components/Loader";
 import NewTransactionDialog from "@/components/Transactions/NewTransactionDialog";
 import TransactionsList from "@/components/Transactions/TransactionsList";
-import { Loader } from "lucide-react";
+
 import { Suspense } from "react";
 
 const page = () => {

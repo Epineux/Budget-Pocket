@@ -1,7 +1,7 @@
 import NoCurrentData from "@/components/NoCurrentData";
-import { getTransactions } from "@/lib/transactions";
 import TransactionsTable from "@/components/Transactions/TransactionsTable";
 import { columns } from "@/components/Transactions/transactionsColumns";
+import { getTransactions } from "@/lib/transactions";
 
 export default async function TransactionsList() {
   const transactionsData = await getTransactions();
