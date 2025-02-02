@@ -43,19 +43,15 @@ export async function handleSignUp(prevState: any, formData: FormData) {
       errors: result.error.flatten().fieldErrors,
     };
   }
-  const { name, email, password } = result.data;
+  const { email, password } = result.data;
 
   const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
     email,
     password,
-    options: {
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/confirm?next=/login`,
-      data: {
-        name: name,
-      },
-    },
   });
+
   if (signUpError) {
+    console.error("Sign-up error:", signUpError);
     return {
       errors: {
         email: [signUpError.message],
@@ -66,7 +62,9 @@ export async function handleSignUp(prevState: any, formData: FormData) {
   if (signUpData?.user) {
     return { success: true };
   }
-  return { errors: { email: ["Something went wrong"] } };
+
+  console.error("Sign-up data:", signUpData);
+  return { errors: { email: ["Something went wrong during sign-up."] } };
 }
 export async function logout() {
   const supabase = await createClient();
