@@ -9,19 +9,29 @@ const UserBalances = async () => {
       getTransactions(),
     ]);
 
-    if (!userInfos) {
+    // Check if userInfos exists and has required properties
+    if (
+      !userInfos ||
+      typeof userInfos.currentBalance === "undefined" ||
+      typeof userInfos.income === "undefined"
+    ) {
       return (
         <div className="rounded-lg border border-red-200 bg-red-50 p-4">
           <h2 className="text-red-700">Error loading user balances</h2>
         </div>
       );
     }
-    const transactionsExpenses =
-      transactions?.filter((transaction) => transaction.amount < 0) || [];
+
+    // Ensure transactions is an array, default to empty array if null/undefined
+    const transactionsExpenses = (transactions || []).filter(
+      (transaction) => transaction.amount < 0,
+    );
+
     const totalExpenses = transactionsExpenses.reduce(
       (total, transaction) => total + Math.abs(transaction.amount),
       0,
     );
+
     return (
       <section className="mt-2xl grid grid-cols-1 gap-sm @[600px]:grid-cols-3 sm-490:gap-xl">
         <BalanceInfo
