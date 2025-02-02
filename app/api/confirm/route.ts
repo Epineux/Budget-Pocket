@@ -7,8 +7,10 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const token_hash = searchParams.get("token_hash");
   const type = searchParams.get("type") as EmailOtpType | null;
+  const next = searchParams.get("next") || "/dashboard"; // Default to protected page
 
   if (!token_hash || !type) {
+    console.error("Missing token or type in confirmation link");
     return redirect("/login?code=invalid_link");
   }
 
@@ -21,31 +23,24 @@ export async function GET(request: NextRequest) {
     });
 
     if (verifyError) {
-      console.error("Verification error:", verifyError);
-      if (verifyError.status === 403 && verifyError.code === "otp_expired") {
-        return redirect("/login?code=link_expired");
-      }
-      return redirect(`/login?code=verification_error`);
+      console.error("Verification failed:", verifyError.message);
+      return redirect(`/login?code=${getErrorCode(verifyError)}`);
     }
 
-    const {
-      data: { session },
-      error: sessionError,
-    } = await supabase.auth.getSession();
-
-    if (sessionError) {
-      return new Response(null, {
-        status: 303,
-        headers: { Location: "/login?code=session_error" },
-      });
-    }
-
+    // Directly redirect after successful verification
     return new Response(null, {
       status: 303,
-      headers: { Location: "/login?code=email_verified" },
+      headers: { Location: next },
     });
   } catch (error) {
     console.error("Unexpected error:", error);
     return redirect("/login?code=unexpected_error");
   }
+}
+
+// Helper to map Supabase errors to custom codes
+function getErrorCode(error: any) {
+  if (error.code === "otp_expired") return "link_expired";
+  if (error.code === "invalid_otp") return "invalid_link";
+  return "verification_error";
 }

@@ -5,6 +5,7 @@ import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+
 export async function handleLogin(prevState: any, formData: FormData) {
   const supabase = await createClient();
 
@@ -48,6 +49,7 @@ export async function handleSignUp(prevState: any, formData: FormData) {
     email,
     password,
     options: {
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/confirm?next=/login`,
       data: {
         name: name,
       },
