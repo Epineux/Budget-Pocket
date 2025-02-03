@@ -1,4 +1,5 @@
 "use client";
+
 import { handleSignUp } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,9 +15,11 @@ import { signUpSchema } from "@/schemas/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useActionState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import { z } from "zod";
 import PasswordField from "./PasswordField";
+
+type SignUpFormData = z.infer<typeof signUpSchema>;
 
 export function SignUpForm() {
   const [state, signUpAction, isPending] = useActionState(
@@ -24,7 +27,7 @@ export function SignUpForm() {
     undefined,
   );
 
-  const form = useForm<z.infer<typeof signUpSchema>>({
+  const form = useForm<SignUpFormData>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
       name: "",
@@ -35,81 +38,69 @@ export function SignUpForm() {
 
   useEffect(() => {
     if (state?.success) {
-      console.log("Sign up successful:", state);
       toast.success(
         "Successfully signed up! Please check your email for confirmation.",
       );
       form.reset();
+    } else if (state?.errors) {
+      Object.entries(state.errors).forEach(([, messages]) => {
+        messages.forEach((message) => {
+          toast.error(message);
+        });
+      });
     }
   }, [state, form]);
+
+  const formFields = [
+    { name: "name" as const, label: "Name", type: "text" },
+    { name: "email" as const, label: "Email", type: "email" },
+    { name: "password" as const, label: "Password", type: "password" },
+  ] as const;
 
   return (
     <Form {...form}>
       <form action={signUpAction} className="mt-2xl">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem className="space-y-1">
-              <FormLabel className="!text-small-bold text-grey-500">
-                Name
-              </FormLabel>
-              <FormControl>
-                <Input {...field} type="text" className="border-beige-500" />
-              </FormControl>
-              {state?.errors?.name && (
-                <p className="text-red-500">{state.errors.name}</p>
-              )}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem className="mt-md space-y-1">
-              <FormLabel className="!text-small-bold text-grey-500">
-                Email
-              </FormLabel>
-              <FormControl>
-                <Input {...field} type="email" className="border-beige-500" />
-              </FormControl>
-              {state?.errors?.email && (
-                <p className="text-red-500">{state.errors.email}</p>
-              )}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem className="mt-md space-y-1">
-              <FormLabel className="!text-small-bold text-grey-500">
-                Password
-              </FormLabel>
-              <FormControl>
-                <PasswordField {...field} />
-              </FormControl>
-              {state?.errors?.password && (
-                <p className="text-red-500">{state.errors.password}</p>
-              )}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {formFields.map((field) => (
+          <FormField
+            key={field.name}
+            control={form.control}
+            name={field.name}
+            render={({ field: fieldProps }) => (
+              <FormItem
+                className={`${field.name === "name" ? "" : "mt-md"} space-y-1`}
+              >
+                <FormLabel className="!text-small-bold text-grey-500">
+                  {field.label}
+                </FormLabel>
+                <FormControl>
+                  {field.name === "password" ? (
+                    <PasswordField {...fieldProps} />
+                  ) : (
+                    <Input
+                      {...fieldProps}
+                      type={field.type}
+                      className="border-beige-500"
+                    />
+                  )}
+                </FormControl>
+                {state?.errors?.[field.name] && (
+                  <p className="text-red-500">{state.errors[field.name][0]}</p>
+                )}
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        ))}
+
         <Button
           className="!text-standard-bold mt-2xl w-full bg-grey-900 text-white"
           size="loginButton"
           disabled={isPending}
           type="submit"
         >
-          Sign Up
+          {isPending ? "Signing up..." : "Sign Up"}
         </Button>
       </form>
-      <Toaster richColors position="top-right" />
     </Form>
   );
 }

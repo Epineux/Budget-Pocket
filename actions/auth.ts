@@ -5,9 +5,18 @@ import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-export async function handleLogin(prevState: any, formData: FormData) {
+type AuthResult = {
+  success?: boolean;
+  errors?: Record<string, string[]>;
+};
+
+export async function handleLogin(
+  prevState: any,
+  formData: FormData,
+): Promise<AuthResult> {
   const supabase = await createClient();
 
+  // Validation du schéma
   const result = loginSchema.safeParse(Object.fromEntries(formData));
   if (!result.success) {
     return {
@@ -15,10 +24,10 @@ export async function handleLogin(prevState: any, formData: FormData) {
     };
   }
 
+  // Login avec Supabase
   const { email, password } = result.data;
-
   const { error } = await supabase.auth.signInWithPassword({
-    email,
+    email: email.trim(),
     password,
   });
 
@@ -34,9 +43,13 @@ export async function handleLogin(prevState: any, formData: FormData) {
   redirect("/");
 }
 
-export async function handleSignUp(prevState: any, formData: FormData) {
+export async function handleSignUp(
+  prevState: any,
+  formData: FormData,
+): Promise<AuthResult> {
   const supabase = await createClient();
 
+  // Validation du schéma
   const result = signUpSchema.safeParse(Object.fromEntries(formData));
   if (!result.success) {
     return {
@@ -44,15 +57,15 @@ export async function handleSignUp(prevState: any, formData: FormData) {
     };
   }
 
+  // Sign up avec Supabase
   const { name, email, password } = result.data;
-
   const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-    email,
+    email: email.trim(),
     password,
     options: {
       emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/confirm?next=/login`,
       data: {
-        name: name,
+        name: name.trim(),
       },
     },
   });
@@ -69,22 +82,32 @@ export async function handleSignUp(prevState: any, formData: FormData) {
     return { success: true };
   }
 
-  return { errors: { email: ["Something went wrong"] } };
+  return { errors: { email: ["Something went wrong during sign up"] } };
 }
 
-export async function logout() {
+export async function logout(): Promise<AuthResult> {
   const supabase = await createClient();
 
   try {
     const { error } = await supabase.auth.signOut();
+
     if (error) {
-      console.error("Error signing out:", error);
-      return { error: error.message };
+      console.error("Logout error:", error);
+      return {
+        errors: {
+          general: [error.message],
+        },
+      };
     }
+
     revalidatePath("/", "layout");
     return { success: true };
   } catch (error) {
-    console.error("Error in logout:", error);
-    return { error: "Failed to logout" };
+    console.error("Logout error:", error);
+    return {
+      errors: {
+        general: ["Failed to logout"],
+      },
+    };
   }
 }

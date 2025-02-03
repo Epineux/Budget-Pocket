@@ -14,8 +14,8 @@ import { Input } from "@/components/ui/input";
 import { AUTH_MESSAGES } from "@/constants/messages";
 import { loginSchema } from "@/schemas/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSearchParams } from "next/navigation"; // This hook needs Suspense
-import { Suspense, useActionState, useEffect } from "react"; // Import Suspense
+import { useSearchParams } from "next/navigation";
+import { Suspense, useActionState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
 import { z } from "zod";
@@ -48,7 +48,16 @@ function LoginFormContent() {
         }
       }
     }
-  }, [searchParams]);
+
+    // Gestion des erreurs de formulaire
+    if (state?.errors) {
+      Object.entries(state.errors).forEach(([, messages]) => {
+        messages.forEach((message) => {
+          toast.error(message);
+        });
+      });
+    }
+  }, [searchParams, state]);
 
   return (
     <Form {...form}>
@@ -67,7 +76,6 @@ function LoginFormContent() {
               {state?.errors?.email && (
                 <p className="text-red-500">{state.errors.email}</p>
               )}
-
               <FormMessage />
             </FormItem>
           )}
@@ -86,7 +94,6 @@ function LoginFormContent() {
               {state?.errors?.password && (
                 <p className="text-red-500">{state.errors.password}</p>
               )}
-
               <FormMessage />
             </FormItem>
           )}
@@ -97,7 +104,7 @@ function LoginFormContent() {
           disabled={isPending}
           type="submit"
         >
-          Login
+          {isPending ? "Logging in..." : "Login"}
         </Button>
       </form>
       <Toaster richColors position="top-right" />
