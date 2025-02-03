@@ -37,42 +37,52 @@ export async function handleLogin(prevState: any, formData: FormData) {
 export async function handleSignUp(prevState: any, formData: FormData) {
   const supabase = await createClient();
 
+  // Validate input
   const result = signUpSchema.safeParse(Object.fromEntries(formData));
   if (!result.success) {
-    return {
-      errors: result.error.flatten().fieldErrors,
-    };
+    return { errors: result.error.flatten().fieldErrors };
   }
 
   const { name, email, password } = result.data;
 
-  const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/confirm?next=/login`,
-      data: {
-        name: name,
+  try {
+    // Step 1: Create user in auth.users
+    const { data: signUpData, error: signUpError } = await supabase.auth.signUp(
+      {
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/confirm?next=/login`,
+          data: { name }, // Optional: Store name in auth.users metadata
+        },
       },
-    },
-  });
+    );
 
-  if (signUpError) {
+    if (signUpError) throw signUpError;
+
+    // Step 2: Insert into userInfos
+    if (signUpData.user) {
+      const { error: insertError } = await supabase.from("userInfos").insert([
+        {
+          user_id: signUpData.user.id,
+          currentBalance: 0,
+          income: 0,
+        },
+      ]);
+
+      if (insertError) throw insertError;
+    }
+
+    return { success: true };
+  } catch (err: any) {
+    console.error("Signup failed:", err);
     return {
-      errors: {
-        email: [signUpError.message],
-      },
+      errors: { email: [err.message || "Something went wrong"] },
     };
   }
-
-  if (signUpData?.user) {
-    return { success: true };
-  }
-
-  return { errors: { email: ["Something went wrong"] } };
 }
-
 export async function logout() {
+  s;
   const supabase = await createClient();
 
   try {
