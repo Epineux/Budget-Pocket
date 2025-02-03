@@ -82,7 +82,7 @@ export async function handleSignUp(prevState: any, formData: FormData) {
   }
 }
 export async function logout() {
-  s;
+
   const supabase = await createClient();
 
   try {
