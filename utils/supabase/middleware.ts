@@ -18,8 +18,11 @@ export async function updateSession(request: NextRequest) {
           response.cookies.set({ name, value, ...options });
         },
         remove(name, options) {
-          request.cookies.delete({ name, ...options });
-          response.cookies.delete({ name, ...options });
+          request.cookies.delete(name);
+          response.cookies.delete({
+            name,
+            ...options,
+          });
         },
       },
     },
