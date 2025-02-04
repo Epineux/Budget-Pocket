@@ -14,14 +14,15 @@ import { Input } from "@/components/ui/input";
 import { AUTH_MESSAGES } from "@/constants/messages";
 import { loginSchema } from "@/schemas/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useActionState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import { z } from "zod";
 import PasswordField from "./PasswordField";
 
 function LoginFormContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const [state, loginAction, isPending] = useActionState(
     handleLogin,
@@ -48,16 +49,13 @@ function LoginFormContent() {
         }
       }
     }
+  }, [searchParams, router]);
 
-    // Gestion des erreurs de formulaire
-    if (state?.errors) {
-      Object.entries(state.errors).forEach(([, messages]) => {
-        messages.forEach((message) => {
-          toast.error(message);
-        });
-      });
+  useEffect(() => {
+    if (state?.success) {
+      router.push("/");
     }
-  }, [searchParams, state]);
+  }, [state, router]);
 
   return (
     <Form {...form}>
@@ -74,7 +72,7 @@ function LoginFormContent() {
                 <Input {...field} type="email" className="border-beige-500" />
               </FormControl>
               {state?.errors?.email && (
-                <p className="text-red-500">{state.errors.email}</p>
+                <p className="text-red-500">{state.errors.email[0]}</p>
               )}
               <FormMessage />
             </FormItem>
@@ -92,7 +90,7 @@ function LoginFormContent() {
                 <PasswordField {...field} />
               </FormControl>
               {state?.errors?.password && (
-                <p className="text-red-500">{state.errors.password}</p>
+                <p className="text-red-500">{state.errors.password[0]}</p>
               )}
               <FormMessage />
             </FormItem>
@@ -107,7 +105,6 @@ function LoginFormContent() {
           {isPending ? "Logging in..." : "Login"}
         </Button>
       </form>
-      <Toaster richColors position="top-right" />
     </Form>
   );
 }

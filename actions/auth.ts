@@ -3,7 +3,7 @@
 import { loginSchema, signUpSchema } from "@/schemas/authSchema";
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
 type AuthResult = {
   success?: boolean;
@@ -14,34 +14,52 @@ export async function handleLogin(
   prevState: any,
   formData: FormData,
 ): Promise<AuthResult> {
+  const cookieStore = await cookies();
   const supabase = await createClient();
 
-  // Validation du schéma
-  const result = loginSchema.safeParse(Object.fromEntries(formData));
-  if (!result.success) {
+  try {
+    const result = loginSchema.safeParse(Object.fromEntries(formData));
+    if (!result.success) {
+      return {
+        errors: result.error.flatten().fieldErrors,
+      };
+    }
+
+    const { email, password } = result.data;
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password,
+    });
+
+    if (error) {
+      return {
+        errors: { email: [error.message] },
+      };
+    }
+
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (session) {
+      cookieStore.set("sb-access-token", session.access_token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+      });
+      cookieStore.set("sb-refresh-token", session.refresh_token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+      });
+    }
+    return { success: true };
+  } catch (error) {
     return {
-      errors: result.error.flatten().fieldErrors,
+      errors: { email: ["An unexpected error occurred"] },
     };
   }
-
-  // Login avec Supabase
-  const { email, password } = result.data;
-  const { error } = await supabase.auth.signInWithPassword({
-    email: email.trim(),
-    password,
-  });
-
-  if (error) {
-    return {
-      errors: {
-        email: [error.message],
-      },
-    };
-  }
-
-  revalidatePath("/", "layout");
-  redirect("/");
 }
+
 
 export async function handleSignUp(
   prevState: any,

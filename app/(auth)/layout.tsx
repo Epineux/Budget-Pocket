@@ -1,6 +1,7 @@
 import HeaderAuth from "@/components/Auth/HeaderAuth";
 import Image from "next/image";
 import React from "react";
+import { Toaster } from "sonner";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -19,6 +20,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <section className=" flex flex-1 items-center justify-center">
           {children}
         </section>
+        <Toaster position="top-right" richColors />
       </div>
     </div>
   );
