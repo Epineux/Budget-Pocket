@@ -118,8 +118,7 @@ export async function handleSignUp(
     // Check for insertion errors
     if (userInfoError) {
       if (userInfoError.code === "23505") {
-        // Postgres unique violation code
-        console.log("UserInfo record already exists for this user");
+        // Unique constraint violation, not a problem
         return { success: true };
       }
       console.error("Failed to create user info:", userInfoError);

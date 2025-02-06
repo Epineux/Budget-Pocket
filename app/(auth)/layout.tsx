@@ -7,7 +7,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <HeaderAuth />
-      <div className="flex min-h-[calc(100vh-70px)] gap-3xl bg-beige-100 px-md sm-490:p-lg lg:min-h-screen">
+      <div className="flex min-h-[calc(100vh-70px)] bg-beige-100 px-md sm-490:p-lg lg:min-h-screen lg:gap-2xl">
         <section className="relative hidden w-[420px] lg:block xl:w-[520px]">
           <Image
             src="/assets/images/illustration-authentication.svg"
